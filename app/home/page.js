@@ -13,6 +13,9 @@ function Home() {
     { id: 3, title: 'Elden Ring', image: 'https://via.placeholder.com/200', price: 49.99 },
     { id: 4, title: 'Red Dead Redemption 2', image: 'https://via.placeholder.com/200', price: 59.99 },
     { id: 5, title: 'Halo Infinite', image: 'https://via.placeholder.com/200', price: 29.99 },
+    { id: 6, title: 'Cyberpunk 2077', image: 'https://via.placeholder.com/200', price: 59.99 },
+    { id: 7, title: 'The Witcher 3', image: 'https://via.placeholder.com/200', price: 39.99 },
+    { id: 8, title: 'Elden Ring', image: 'https://via.placeholder.com/200', price: 49.99 },
     // Add more games here...
   ];
 
@@ -29,7 +32,9 @@ function Home() {
       <main>
         <h1 className="page-title">Steam Game Store</h1>
         <SearchBar handleSearch={setSearchQuery} />
-        <GameList games={filteredGames} />
+        <div className="gameListDiv">
+          <GameList games={filteredGames} />
+        </div>
       </main>
     </div>
   );

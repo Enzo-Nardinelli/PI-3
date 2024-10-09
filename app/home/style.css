@@ -10,3 +10,12 @@
   margin: 20px 0;
   text-align: center;
 }
+
+.gameListDiv{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(1500px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  background-color: #1a1a1a;
+}
+
