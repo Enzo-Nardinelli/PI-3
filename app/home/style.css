@@ -1,0 +1,12 @@
+.app {
+  background-color: #1a1a1a;
+  color: white;
+  min-height: 100vh;
+}
+
+.page-title {
+  color: white;
+  font-size: 2rem;
+  margin: 20px 0;
+  text-align: center;
+}
