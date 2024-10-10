@@ -1,19 +1,22 @@
-/* src/components/SearchBar.css */
 .search-bar {
-    margin: 20px;
+    margin-top: 20px;
   }
   
-  .search-bar input {
-    width: 100%;
+.search-bar input {
+    width: 120%;
     padding: 10px;
     font-size: 1rem;
     border: none;
-    border-radius: 5px;
-    background-color: #2a2a2a;
-    color: white;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-color: #EBF2FA;
+    color: black;
   }
   
   .search-bar input::placeholder {
     color: #888;
   }
   
+  textarea:focus, input:focus{
+    outline: none;
+}

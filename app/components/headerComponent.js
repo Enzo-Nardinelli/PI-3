@@ -1,18 +1,21 @@
-// src/components/Header.js
+"use client";
 import React from 'react';
 import './headerComponent.css';
+import logo from "../imagens/logo.jpg";
+
+
+console.log(logo);
 
 const Header = () => {
   return (
     <header className="header">
-      <nav className="nav">
         <ul className="nav-list">
-          <li className="nav-item">Loja</li>
-          <li className="nav-item">Biblioteca</li>
-          <li className="nav-item">Comunidade</li>
-          <li className="nav-item">Amigos</li>
+         <img src={logo} height="20" width="20"/>
+          <li className="nav-item">LOJA</li>
+          <li className="nav-item">BIBLIOTECA</li>
+          <li className="nav-item">COMUNIDADE</li>
+          <li className="nav-item">AMIGOS</li>
         </ul>
-      </nav>
     </header>
   );
 };

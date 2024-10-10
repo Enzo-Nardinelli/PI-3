@@ -1,9 +1,8 @@
-/* src/components/GameCard.css */
+
 .game-card {
-    background-color: #333;
+    background-color: #064789;
     padding: 15px;
     border-radius: 10px;
-    color: white;
     margin-bottom: 20px;
   }
 
@@ -23,18 +22,27 @@
     object-fit: cover;
     border-radius: 10px;
   }
+
+  .game-details{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   
   .game-title {
     font-size: 1.2rem;
     margin: 10px 0;
+    color: #EBF2FA;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   }
   
   .game-price {
     font-size: 1rem;
+    color: #EBF2FA;
   }
   
   .buy-button {
-    background-color: #007bff;
+    background-color: #A5BE00;
     color: white;
     border: none;
     padding: 10px;
@@ -43,6 +51,5 @@
   }
   
   .buy-button:hover {
-    background-color: #0056b3;
+    background-color: #679436;
   }
-  

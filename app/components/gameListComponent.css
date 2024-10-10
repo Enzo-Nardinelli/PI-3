@@ -1,11 +1,13 @@
-/* src/components/GameList.css */
+
 .game-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
     padding: 20px;
-    background-color: #1a1a1a;
+    background-color: #427AA1;
     max-height: 80vh;
     overflow-y: auto;
-  }
+    margin-left: 20%;
+    margin-right: 20%;
+}
   

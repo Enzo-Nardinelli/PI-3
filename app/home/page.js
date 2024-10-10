@@ -1,4 +1,3 @@
-// src/App.js
 "use client";
 import React, { useState } from 'react';
 import Header from '../components/headerComponent.js';
@@ -11,12 +10,7 @@ function Home() {
     { id: 1, title: 'Cyberpunk 2077', image: 'https://via.placeholder.com/200', price: 59.99 },
     { id: 2, title: 'The Witcher 3', image: 'https://via.placeholder.com/200', price: 39.99 },
     { id: 3, title: 'Elden Ring', image: 'https://via.placeholder.com/200', price: 49.99 },
-    { id: 4, title: 'Red Dead Redemption 2', image: 'https://via.placeholder.com/200', price: 59.99 },
-    { id: 5, title: 'Halo Infinite', image: 'https://via.placeholder.com/200', price: 29.99 },
-    { id: 6, title: 'Cyberpunk 2077', image: 'https://via.placeholder.com/200', price: 59.99 },
-    { id: 7, title: 'The Witcher 3', image: 'https://via.placeholder.com/200', price: 39.99 },
-    { id: 8, title: 'Elden Ring', image: 'https://via.placeholder.com/200', price: 49.99 },
-    // Add more games here...
+    { id: 4, title: 'Red Dead Redemption 2', image: 'https://via.placeholder.com/200', price: 59.99 }
   ];
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -30,9 +24,23 @@ function Home() {
     <div className="app">
       <Header />
       <main>
-        <h1 className="page-title">Steam Game Store</h1>
-        <SearchBar handleSearch={setSearchQuery} />
+        {/* <h1 className="page-title">LOJA</h1> */}
+        <div className="navBar">
+            <ul className="navTeste">
+              <li className="navBugado">Populares</li>
+              <li className="navBugado">Lista personalisada</li>
+              <li className="navBugado">Novidades</li>
+              <li className="navBugado">Categorias</li>
+              <li className="navBugado">Preços</li>
+           </ul>
+          <SearchBar handleSearch={setSearchQuery} />
+        </div>
         <div className="gameListDiv">
+          <h4>MAIS POPULARES</h4>
+          <GameList games={filteredGames} />
+          <h4>LISTA PERSONALISADA</h4>
+          <GameList games={filteredGames} />
+          <h4>NOVIDADES</h4>
           <GameList games={filteredGames} />
         </div>
       </main>
