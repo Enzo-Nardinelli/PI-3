@@ -1,0 +1,56 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #1b2838; /* Dark background similar to Steam */
+    color: #c7d5e0; /* Light text for contrast */
+  }
+  
+  .game-detail {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #2a475e; /* Slightly lighter background */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .game-title {
+    font-size: 32px;
+    color: #66c0f4; /* Steam's blue accent color */
+    margin-bottom: 20px;
+  }
+  
+  .game-genre,
+  .game-price {
+    font-size: 18px;
+    color: #8f98a0; /* Secondary text color */
+    margin-bottom: 10px;
+  }
+  
+  .game-description {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  
+  .game-price {
+    font-size: 22px;
+    color: #acdb6b; /* Green color for price */
+    font-weight: bold;
+  }
+  
+  /* Optional: add hover effects */
+  .game-title:hover {
+    text-decoration: underline;
+  }
+  
+  .game-price:hover {
+    color: #c5f99e;
+  }
+  

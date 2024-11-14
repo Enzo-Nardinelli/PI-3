@@ -1,0 +1,42 @@
+.app02 {
+    background-color: #427AA1;
+    color: white;
+    min-height: 100vh;
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+
+  .centered-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .centered-form input,
+.centered-form button {
+  width: 100%;
+  margin: 8px 0;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.centered-form button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.centered-form button:hover {
+  background-color: #0056b3;
+}

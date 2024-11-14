@@ -1,5 +1,7 @@
 'use client'
 import { useState } from 'react';
+import './page.css';
+import Header from '../components/headerComponent';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -24,11 +26,15 @@ function Login() {
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-      <button type="submit">Login</button>
-    </form>
+    <div className='app01'>
+      <div className='centered-form'>
+      <form onSubmit={handleLogin}>
+        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
+        <button type="submit">Login</button>
+      </form>
+      </div>
+    </div>
   );
 }
 

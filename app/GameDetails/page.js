@@ -28,11 +28,11 @@ function GameDetails() {
   if (!game) return <p>Loading...</p>;
 
   return (
-    <div>
-      <h2>{game.title}</h2>
-      <p>Genre: {game.genre}</p>
-      <p>Description: {game.description}</p>
-      <p>Price: ${game.price}</p>
+    <div className='game-detail'>
+      <h2 className='game-title'>{game.title}</h2>
+      <p className='game-genre'>Genre: {game.genre}</p>
+      <p className='game-description'>Description: {game.description}</p>
+      <p className='game-price'>Price: ${game.price}</p>
     </div>
   );
 }
