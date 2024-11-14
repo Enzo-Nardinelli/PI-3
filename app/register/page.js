@@ -15,14 +15,7 @@ function Register() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
-      const contentType = response.headers.get("content-type");
-      if (!response.ok) {
-        const errorData = contentType && contentType.includes("application/json")
-        ? await response.json()
-        : await response.text();
-        console.error("Backend error:", errorData);
-        throw new Error("Registration failed");
-      }
+      
       const data = await response.json();
       console.log("User registered:", data);
     } catch (error) {
@@ -35,6 +28,7 @@ function Register() {
       <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
       <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
       <button type="submit">Register</button>
+      <p>aaaaaaaaaaaaaaaaaaaaaa</p>
     </form>
   );
 }

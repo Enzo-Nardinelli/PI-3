@@ -1,19 +1,26 @@
 "use client";
-import React, { useState } from 'react';
 import Header from '../components/headerComponent.js';
 import GameList from '../components/gameListComponent.js';
 import SearchBar from '../components/searchBarComponent.js';
 import './style.css';
+import React, { useState, useEffect } from 'react';
 
 function Home() {
-  const games = [
-    { id: 1, title: 'Cyberpunk 2077', image: 'https://via.placeholder.com/200', price: 59.99 },
-    { id: 2, title: 'The Witcher 3', image: 'https://via.placeholder.com/200', price: 39.99 },
-    { id: 3, title: 'Elden Ring', image: 'https://via.placeholder.com/200', price: 49.99 },
-    { id: 4, title: 'Red Dead Redemption 2', image: 'https://via.placeholder.com/200', price: 59.99 }
-  ];
-
+  const [games, setGames] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    const fetchGames = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/api/games'); // Replace with your backend URL if hosted
+        const data = await response.json();
+        setGames(data); // Update the games state with fetched data
+      } catch (error) {
+        console.error('Error fetching games:', error);
+      }
+    };
+    fetchGames();
+  }, []);
 
   // Filter games based on search query
   const filteredGames = games.filter((game) =>
