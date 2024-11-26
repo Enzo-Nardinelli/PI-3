@@ -43,11 +43,7 @@ function Home() {
           <SearchBar handleSearch={setSearchQuery} />
         </div>
         <div className="gameListDiv">
-          <h4>MAIS POPULARES</h4>
-          <GameList games={filteredGames} />
-          <h4>LISTA PERSONALISADA</h4>
-          <GameList games={filteredGames} />
-          <h4>NOVIDADES</h4>
+          <h4>JOGOS</h4>
           <GameList games={filteredGames} />
         </div>
       </main>

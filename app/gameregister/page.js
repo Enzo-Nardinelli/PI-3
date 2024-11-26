@@ -7,11 +7,13 @@ function GameRegister() {
   const [genre, setGenre] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
+  const [imgURL, setImgUrl] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const newGame = { title, genre, description, price: parseFloat(price) };
+    const newGame = { title, genre, description, price: parseFloat(price), imgURL };
+    console.log(newGame);
 
     try {
       const response = await fetch("http://localhost:8080/api/games/register", {
@@ -28,6 +30,7 @@ function GameRegister() {
         setGenre('');
         setDescription('');
         setPrice('');
+        setImgUrl('');
       } else {
         console.error("Failed to register game");
       }
@@ -60,6 +63,12 @@ function GameRegister() {
         placeholder="Price"
         value={price}
         onChange={(e) => setPrice(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Image URL"
+        value={imgURL}
+        onChange={(e) => setImgUrl(e.target.value)} // Add handler for imgUrl
       />
       <button type="submit">Register Game</button>
     </form>

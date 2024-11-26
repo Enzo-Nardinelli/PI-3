@@ -14,7 +14,7 @@ const GameCard = ({ game }) => {
   return (
     <div className="game-card" onClick={handleClick}>
       <div className="imgDiv">
-      <img src={game.image} alt={game.title} className="game-image" />
+      <img src={game.imgURL} alt={game.title} className="game-image" />
       </div>
       <div className="game-details">
         <h3 className="game-title">{game.title}</h3>

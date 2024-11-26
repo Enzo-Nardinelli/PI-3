@@ -1,0 +1,72 @@
+body {
+  font-family: 'Arial', sans-serif;
+  color: #ddd;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.game-detail-Detail {
+  max-width: 800px;
+  background-color: #064789;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+  text-align: center;
+}
+
+/* Game Title */
+.game-title-Detail {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #444;
+  padding-bottom: 10px;
+  
+}
+
+/* Game Cover Image */
+.game-detail-Detail img {
+  width: 70%;
+  height: auto;
+  border-radius: 5px;
+  margin: 20px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+  object-fit: cover;
+}
+
+/* Game Genre */
+.game-genre-Detail {
+  font-size: 1.2rem;
+  color: #a0a0a0;
+  margin: 10px 0;
+}
+
+/* Game Description */
+.game-description-Detail {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #ccc;
+  margin: 20px 0;
+}
+
+/* Game Price */
+.game-price-Detail {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 20px;
+  color: #EBF2FA;
+}
+
+/* Buttons or Additional Details Placeholder */
+.game-detail-Detail .button-container {
+  margin-top: 20px;
+}
+
+
+
+
