@@ -9,9 +9,11 @@ import Login from "./login/page";
 import Register from "./register/page";
 import GameRegister from "./gameregister/page";
 import GameDetails from "./GameDetails/page";
+import { AuthProvider } from "./authProvider/authProvider";
 
 export default function Inicio() {
   return (
+    <AuthProvider>
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -21,6 +23,6 @@ export default function Inicio() {
         <Route path="/game/:id" element={<GameDetails />} />
       </Routes>
     </Router>
-      
+    </AuthProvider>
     )
 }  

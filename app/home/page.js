@@ -8,8 +8,9 @@ import React, { useState, useEffect } from 'react';
 function Home() {
   const [games, setGames] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-
+  
   useEffect(() => {
+    
     const fetchGames = async () => {
       try {
         const response = await fetch('http://localhost:8080/api/games'); // Replace with your backend URL if hosted

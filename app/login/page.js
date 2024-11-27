@@ -2,10 +2,12 @@
 import { useState } from 'react';
 import './page.css';
 import Header from '../components/headerComponent';
+//import { useAuth } from '../authProvider/authProvider';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  //const { login } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -19,6 +21,8 @@ function Login() {
         throw new Error("Login failed");
       }
       const data = await response.json();
+      console.log(data);
+      localStorage.setItem("user", JSON.stringify(data));
       console.log("User logged in:", data);
     } catch (error) {
       console.error("Login failed:", error);
