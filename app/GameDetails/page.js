@@ -30,7 +30,7 @@ function GameDetails() {
 
   if (!game) return <p>Loading...</p>;
 
-  const handleClick = () => {
+  const handleClick = async () => {
     const userStorage = JSON.parse(localStorage.getItem("user"));
       //const userJogos = JSON.parse(userStorage.userJogos);
       const userCarrinho = JSON.parse(userStorage.userCarrinho);
@@ -40,7 +40,27 @@ function GameDetails() {
       userStorage.userCarrinho = JSON.stringify(userCarrinho);
       localStorage.setItem("user", JSON.stringify(userStorage));
       console.log(localStorage.getItem("user"));
-      navigate("/carrinho");
+      console.log(userStorage.userId);
+      try {
+        const response = await fetch(`http://localhost:8080/users/${JSON.stringify(userStorage.userId)}/carrinho/add`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(game.id), // Send the game ID to add it to the user's cart
+        });
+    
+        if (response.ok) {
+          console.log("Game added to cart in the backend.");
+          navigate("/carrinho"); // Navigate to the cart page
+        } else {
+          console.error("Failed to add game to cart in the backend.");
+        }
+      } catch (error) {
+        console.error("Error updating the cart:", error);
+      }
+
+      navigate("/carrinho2");
   };
 
   return (

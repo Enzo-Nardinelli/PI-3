@@ -44,15 +44,19 @@ const Carrinho = () => {
     fetchGames();
   }, [carrinho]);
 
-  console.log(games);
+  //console.log(games);
 
   const handleFinalizarCompra = () => {
     // Aqui você pode fazer a chamada para a API de finalização da compra
     console.log("Compra finalizada com os seguintes jogos:", carrinho);
     // Após a compra, limpar o carrinho
     const userStorage = JSON.parse(localStorage.getItem("user"));
+    const userJogos = JSON.parse(userStorage.userJogos);
+    userJogos.push(...carrinho);
     userStorage.userCarrinho = [];
     setCarrinho([]);
+    console.log(userJogos);
+    console.log("iiiiiiiiiiioooooooo");
   };
 
   const handleRemoverItem = (gameId) => {

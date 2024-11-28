@@ -51,7 +51,7 @@ const CartPage = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/users/${user.id}/carrinho/add`, {
+      const response = await fetch(`http://localhost:8080/users/${(user.id)}/carrinho/add`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -103,9 +103,9 @@ const CartPage = () => {
       console.error("User not logged in");
       return;
     }
-
+    console.log(JSON.stringify(user.userId));
     try {
-      const response = await fetch(`http://localhost:8080/users/${user.id}/carrinho/finalizar`, {
+      const response = await fetch(`http://localhost:8080/users/${JSON.stringify(user.userId)}/carrinho/finalizar`, {
         method: "PUT",
       });
 
@@ -119,6 +119,14 @@ const CartPage = () => {
     } catch (error) {
       console.error("Error finalizing purchase:", error);
     }
+    const userStorage = JSON.parse(localStorage.getItem("user"));
+    const userJogos = JSON.parse(userStorage.userJogos);
+    let userCarrinho = JSON.parse(userStorage.userCarrinho);
+    userJogos.push(...cart);
+    userCarrinho=[];
+    userStorage.userJogos = JSON.stringify(userJogos);
+    userStorage.userCarrinho = JSON.stringify(userCarrinho);
+    localStorage.setItem("user", JSON.stringify(userStorage));
   };
 
   if (!user) {
