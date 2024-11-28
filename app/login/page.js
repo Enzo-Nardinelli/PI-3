@@ -2,11 +2,13 @@
 import { useState } from 'react';
 import './page.css';
 import Header from '../components/headerComponent';
+import { useNavigate } from 'react-router-dom';
 //import { useAuth } from '../authProvider/authProvider';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
   //const { login } = useAuth();
 
   const handleLogin = async (e) => {
@@ -21,16 +23,18 @@ function Login() {
         throw new Error("Login failed");
       }
       const data = await response.json();
-      data.userJogos = JSON.parse(data.userJogos);
-      data.userCarrinho = JSON.parse(data.userCarrinho);
+      
       console.log(data);
-      localStorage.setItem("user", data);
-      console.log(localStorage.getItem('user').userJogos)
+      localStorage.setItem("user", JSON.stringify(data));
       console.log("User logged in:", data.userJogos);
-      console.log(data.userJogos);
+      navigate("/home");
     } catch (error) {
       console.error("Login failed:", error);
     }
+  };
+
+  const handleClick = () => {
+      navigate("/register");
   };
 
   return (
@@ -40,6 +44,7 @@ function Login() {
         <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
         <button type="submit">Login</button>
+        <button onClick={handleClick}>Registrar</button>
       </form>
       </div>
     </div>
