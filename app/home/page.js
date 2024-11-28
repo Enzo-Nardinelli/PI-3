@@ -10,6 +10,8 @@ function Home() {
   const [searchQuery, setSearchQuery] = useState('');
   
   useEffect(() => {
+        // Retrieve the stored JSON string
+    const userJson = localStorage.getItem('user');
     
     const fetchGames = async () => {
       try {

@@ -21,9 +21,13 @@ function Login() {
         throw new Error("Login failed");
       }
       const data = await response.json();
+      data.userJogos = JSON.parse(data.userJogos);
+      data.userCarrinho = JSON.parse(data.userCarrinho);
       console.log(data);
-      localStorage.setItem("user", JSON.stringify(data));
-      console.log("User logged in:", data);
+      localStorage.setItem("user", data);
+      console.log(localStorage.getItem('user').userJogos)
+      console.log("User logged in:", data.userJogos);
+      console.log(data.userJogos);
     } catch (error) {
       console.error("Login failed:", error);
     }

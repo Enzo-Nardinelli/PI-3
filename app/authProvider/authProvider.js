@@ -10,14 +10,11 @@ export const AuthProvider = ({ children }) => {
   // Carregar o usuário do localStorage
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
   }, []);
 
-  const login = (data) => {
-    localStorage.setItem("user", JSON.stringify(data));
-    setUser(data);
+  const login = (userData) => {
+    localStorage.setItem("user", JSON.stringify(userData));
+    setUser(userData);
   };
 
   const logout = () => {
