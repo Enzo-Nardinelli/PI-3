@@ -34,7 +34,7 @@ function Login() {
   };
 
   const handleClick = () => {
-      navigate("/register");
+      navigate("/");
   };
 
   return (
@@ -43,7 +43,7 @@ function Login() {
       <form onSubmit={handleLogin}>
         <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-        <button type="submit">Login</button>
+        <button type="submit">Confirmar</button>
         <button onClick={handleClick}>Registrar</button>
       </form>
       </div>

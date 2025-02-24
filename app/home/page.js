@@ -4,10 +4,12 @@ import GameList from '../components/gameListComponent.js';
 import SearchBar from '../components/searchBarComponent.js';
 import './style.css';
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
   const [games, setGames] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
   
   useEffect(() => {
         // Retrieve the stored JSON string
@@ -25,10 +27,14 @@ function Home() {
     fetchGames();
   }, []);
 
+  const handleClickNav = () => {
+    navigate("/users");
+  }
+
   // Filter games based on search query
-  const filteredGames = games.filter((game) =>
-    game.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // const filteredGames = games.filter((game) =>
+  //   game.title.toLowerCase().includes(searchQuery.toLowerCase())
+  // );
 
   return (
     <div className="app">
@@ -42,12 +48,14 @@ function Home() {
               <li className="navBugado">Novidades</li>
               <li className="navBugado">Categorias</li>
               <li className="navBugado">Preços</li>
+              <li className="navBugado" onClick={handleClickNav}>Usuários</li>
            </ul>
           <SearchBar handleSearch={setSearchQuery} />
         </div>
         <div className="gameListDiv">
           <h4>JOGOS</h4>
-          <GameList games={filteredGames} />
+          {/* <GameList games={filteredGames} /> */}
+          <GameList games={games} />
         </div>
       </main>
     </div>
