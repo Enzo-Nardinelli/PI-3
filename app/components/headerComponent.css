@@ -1,26 +1,20 @@
-
 .header {
   background-color: #064789;
   padding: 20px;
+  display: flex;
+  justify-content: space-between; /* Garantir que logo e nav-list fiquem nas extremidades */
+  align-items: center;
   text-align: center;
 }
-  
 
-.nav {
-  display: flex;
-  justify-content: center;
-  
-}
-  
 .nav-list {
-  transform: translateX(35px);
   list-style: none;
   display: flex;
   gap: 20px;
   padding: 0;
-  margin-left: 350px;
+  margin-left: 100px; /* Ajuste para centralizar os itens */
 }
-  
+
 .nav-item {
   color: #EBF2FA;
   cursor: pointer;
@@ -28,4 +22,18 @@
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-  
+.nav-logo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.nav-icons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+.nav-icons li {
+  list-style: none; /* Remover as bolinhas */
+}

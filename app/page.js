@@ -10,15 +10,15 @@ import Register from "./register/page";
 import GameRegister from "./gameregister/page";
 import GameDetails from "./GameDetails/page";
 import { AuthProvider } from "./authProvider/authProvider";
-import Carrinho from "./carrinho/carrinho";
+import Carrinho from "./carrinho/page";
 import CartPage from "./carrinho2/cartPage";
 
 export default function Inicio() {
   return (
       <Router>
         <Routes>
-          <Route path="/home" element={<Home />} />
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/gameregister" element={<GameRegister />} />
           <Route path="/game/:id" element={<GameDetails />} />
