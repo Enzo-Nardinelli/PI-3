@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 const GameCard = ({ game }) => {
   const navigate = useNavigate();
+let teste = game.imgURL;
 
   const handleClick = () => {
     navigate(`/game/${game.id}`);  // Redirect to the GameDetail page for this game

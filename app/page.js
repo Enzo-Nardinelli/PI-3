@@ -17,8 +17,8 @@ export default function Inicio() {
   return (
       <Router>
         <Routes>
-          <Route path="/home" element={<Home />} />
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/gameregister" element={<GameRegister />} />
           <Route path="/game/:id" element={<GameDetails />} />
