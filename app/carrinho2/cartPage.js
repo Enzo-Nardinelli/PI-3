@@ -1,67 +1,89 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 const CartPage = () => {
-  const [user, setUser] = useState(null); // Store the logged-in user
-  const [games, setGames] = useState([]); // Store games in the cart
-  const [cart, setCart] = useState([]); // Store the cart game IDs
+  const [user, setUser] = useState(null);
+  const [games, setGames] = useState([]);
+  const [cart, setCart] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Retrieve the user from localStorage and set it to state
+    const temporaryUser = JSON.parse(localStorage.getItem("temporaryUser"));
     const userStorage = JSON.parse(localStorage.getItem("user"));
+  
     if (userStorage) {
+      const getCarrinho = async () => {
+        try {
+          const response = await fetch(`http://localhost:8080/users/${userStorage.userEmail}/carrinho/retorno`);
+          if (response.ok) {
+            const carrinho = await response.json();
+            setCart(Array.isArray(carrinho) ? carrinho : []);
+          } else {
+            console.error("Erro ao buscar carrinho do usuário.");
+            setCart([]);
+          }
+        } catch (err) {
+          console.error("Erro na requisição do carrinho:", err);
+          setCart([]);
+        }
+      };
+  
+      getCarrinho(); // ← chamada da função ao carregar
+  
       setUser(userStorage); // Set the user from localStorage
+    } else if (!temporaryUser && !userStorage) {
+      const temporaryUser = {
+        userCarrinho: []
+      };
+      localStorage.setItem("temporaryUser", JSON.stringify(temporaryUser));
+      setUser(temporaryUser);
+      setCart(temporaryUser.userCarrinho);
+    } else if (temporaryUser && !userStorage) {
+      setUser(temporaryUser);
+      setCart(temporaryUser.userCarrinho);
     }
-
-    // Get the user's cart from the localStorage (or API if needed)
-    const userCarrinho = JSON.parse(userStorage?.userCarrinho || "[]");
-    setCart(userCarrinho); // Set the user's cart
   }, []);
+  
 
   useEffect(() => {
-    // Fetch games based on the cart items (game IDs)
+    // console.log("Cart updated:", cart);
+  }, [cart]);
+
+  useEffect(() => {
     const fetchGames = async () => {
       try {
         const fetchedGames = await Promise.all(
           cart.map(async (id) => {
             const response = await fetch(`http://localhost:8080/api/games/${id}`);
-            if (response.ok) {
-              return response.json();
-            } else {
-              console.error(`Failed to fetch game with ID: ${id}`);
-              return null;
-            }
+            return response.ok ? response.json() : null;
           })
         );
-
-        // Filter out any null values for failed fetches
-        setGames(fetchedGames.filter((game) => game !== null));
+        setGames(fetchedGames.filter((g) => g !== null));
       } catch (error) {
         console.error("Error fetching games:", error);
       }
     };
 
-    fetchGames();
-  }, [cart]); // Fetch games whenever the cart changes
-
-  // Handle adding a game to the cart
-  const handleAddToCart = async (gameId) => {
-    if (!user) {
-      console.error("User not logged in");
-      return;
+    if (Array.isArray(cart) && cart.length > 0) {
+      fetchGames();
     }
+  }, [cart]);
+
+  const handleAddToCart = async (gameId) => {
+    if (!user) return;
 
     try {
-      const response = await fetch(`http://localhost:8080/users/${(user.id)}/carrinho/add`, {
+      const response = await fetch(`http://localhost:8080/users/${user.id}/carrinho/add`, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(gameId),
       });
 
       if (response.ok) {
         const updatedUser = await response.json();
-        setCart(updatedUser.userCarrinho); // Update the cart after adding the game
+        const updatedCart = updatedUser.userCarrinho;
+        setCart(Array.isArray(updatedCart) ? updatedCart : []);
       } else {
         console.error("Failed to add to cart");
       }
@@ -70,48 +92,54 @@ const CartPage = () => {
     }
   };
 
-  // Handle removing a game from the cart
   const handleRemoveFromCart = async (gameId) => {
-    if (!user) {
-      console.error("User not logged in");
-      return;
-    }
+    const temporaryUser = JSON.parse(localStorage.getItem("temporaryUser"));
+    const userStorage = JSON.parse(localStorage.getItem("user"));
 
-    try {
-      const response = await fetch(`http://localhost:8080/users/${user.id}/carrinho/remove`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(gameId),
-      });
+    if (!userStorage) {
+      const newCarrinho = temporaryUser.userCarrinho.filter((id) => id !== gameId);
+      temporaryUser.userCarrinho = newCarrinho;
+      localStorage.setItem("temporaryUser", JSON.stringify(temporaryUser));
+      setCart(newCarrinho);
+    } else {
+      try {
+        const response = await fetch(`http://localhost:8080/users/${user.userEmail}/carrinho/remove`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(gameId),
+        });
 
-      if (response.ok) {
-        const updatedUser = await response.json();
-        setCart(updatedUser.userCarrinho); // Update the cart after removing the game
-      } else {
-        console.error("Failed to remove from cart");
+        if (response.ok) {
+          const updatedUser = await response.json();
+          const updatedCart = updatedUser.carrinho;
+          console.log("Uptdated cart", updatedCart);
+          setCart(Array.isArray(updatedCart) ? updatedCart : []);
+        } else {
+          console.error("Failed to remove from cart");
+        }
+      } catch (error) {
+        console.error("Error removing game from cart:", error);
       }
-    } catch (error) {
-      console.error("Error removing game from cart:", error);
     }
   };
 
-  // Handle finalizing the purchase
   const handleFinalizePurchase = async () => {
-    if (!user) {
-      console.error("User not logged in");
-      return;
-    }
-    console.log(JSON.stringify(user.userId));
+    if (!user) return;
+
     try {
-      const response = await fetch(`http://localhost:8080/users/${JSON.stringify(user.userId)}/carrinho/finalizar`, {
+      const response = await fetch(`http://localhost:8080/users/${user.userId}/carrinho/finalizar`, {
         method: "PUT",
       });
 
       if (response.ok) {
         const updatedUser = await response.json();
-        setCart([]); // Clear the cart after finalizing the purchase
+        setCart([]);
+
+        const userStorage = JSON.parse(localStorage.getItem("user"));
+        const userJogos = JSON.parse(userStorage.userJogos || "[]");
+        userStorage.userCarrinho = JSON.stringify([]);
+        localStorage.setItem("user", JSON.stringify(userStorage));
+
         console.log("Purchase finalized", updatedUser);
       } else {
         console.error("Failed to finalize purchase");
@@ -119,14 +147,6 @@ const CartPage = () => {
     } catch (error) {
       console.error("Error finalizing purchase:", error);
     }
-    const userStorage = JSON.parse(localStorage.getItem("user"));
-    const userJogos = JSON.parse(userStorage.userJogos);
-    let userCarrinho = JSON.parse(userStorage.userCarrinho);
-    userJogos.push(...cart);
-    userCarrinho=[];
-    userStorage.userJogos = JSON.stringify(userJogos);
-    userStorage.userCarrinho = JSON.stringify(userCarrinho);
-    localStorage.setItem("user", JSON.stringify(userStorage));
   };
 
   if (!user) {
@@ -137,6 +157,7 @@ const CartPage = () => {
     <div>
       <h1>Shopping Cart</h1>
       <h2>Welcome, {user.username}!</h2>
+      <h3>Numero de itens: {cart.length}</h3>
 
       {cart.length === 0 ? (
         <p>Your cart is empty.</p>
@@ -161,3 +182,4 @@ const CartPage = () => {
 };
 
 export default CartPage;
+

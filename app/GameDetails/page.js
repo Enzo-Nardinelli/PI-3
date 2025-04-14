@@ -59,39 +59,59 @@ function GameDetails() {
   const gameImages = prepareGameImages();
 
   const handleClick = async () => {
-    try {
-      const userStorage = JSON.parse(localStorage.getItem("user"));
-      if (!userStorage) {
-        alert("Please log in to add items to cart");
-        navigate("/login");
-        return;
+    const userStorage = JSON.parse(localStorage.getItem("user"));
+    const temporaryUser = JSON.parse(localStorage.getItem("temporaryUser"));
+    if (userStorage) { // Set the user from localStorage
+      let userCarrinho = [];
+
+      try {
+        userCarrinho = Array.isArray(userStorage.userCarrinho)
+          ? userStorage.userCarrinho
+          : JSON.parse(userStorage.userCarrinho || "[]");
+      } catch (err) {
+        console.error("Failed to parse carrinho", err);
+        userCarrinho = [];
       }
-      
-      const userCarrinho = JSON.parse(userStorage.userCarrinho || "[]");
+
       userCarrinho.push(game.id);
-      userStorage.userCarrinho = JSON.stringify(userCarrinho);
+      userStorage.userCarrinho = userCarrinho; // salva como array direto
       localStorage.setItem("user", JSON.stringify(userStorage));
-      
-      const response = await fetch(`http://localhost:8080/users/${userStorage.userId}/carrinho/add`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(game.id),
-      });
-  
-      if (response.ok) {
-        console.log("Game added to cart in the backend.");
-        // Only navigate to one location - fixed the double navigation issue
-        navigate("/carrinho");
-      } else {
-        console.error("Failed to add game to cart in the backend.");
-        alert("Failed to add game to cart. Please try again.");
+      console.log(userStorage);
+      console.log(temporaryUser);
+      try {
+        const response = await fetch(`http://localhost:8080/users/${JSON.stringify(userStorage.userEmail)}/carrinho/add`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(game.id), // Send the game ID to add it to the user's cart
+        });
+    
+        if (response.ok) {
+          console.log("Game added to cart in the backend.");
+          navigate("/carrinho2"); // Navigate to the cart page
+        } else {
+          console.error("Failed to add game to cart in the backend.");
+        }
+      } catch (error) {
+        console.error("Error updating the cart:", error);
       }
-    } catch (error) {
-      console.error("Error updating the cart:", error);
-      alert("Error updating your cart. Please try again.");
+
+      navigate("/carrinho2");
+    } else if(!temporaryUser){
+      const temporaryUser = {
+        userCarrinho: []
+      };
+      temporaryUser.userCarrinho.push(game.id);
+      localStorage.setItem("temporaryUser", JSON.stringify(temporaryUser));
+      navigate("/carrinho2");
+    } else {
+      console.log("awdadwd")
+      temporaryUser.userCarrinho.push(game.id);
+      localStorage.setItem("temporaryUser", JSON.stringify(temporaryUser));
+      navigate("/carrinho2");
     }
+
   };
 
   return (

@@ -11,8 +11,13 @@ const navigate = useNavigate();
 
 const handleClick = () => {
       console.log("qualquer coisa")
-      navigate("/carrinho");
+      navigate("/carrinho2");
   };
+  const handleClickUser = () => {
+    console.log("qualquer coisa")
+    navigate("/login");
+};
+  
   return (
     <header className="header">
       {/* Logo à esquerda */}
@@ -34,9 +39,7 @@ const handleClick = () => {
             <img src="/imagens/carrinho.png" height="20" width="20" alt="Carrinho" onClick={handleClick}/>
         </li>
         <li className="nav-item">
-          <Link href="/user">
-            <img src="/imagens/user.png" height="20" width="20" alt="User" />
-          </Link>
+            <img src="/imagens/user.png" height="20" width="20" alt="User" onClick={handleClickUser}/>
         </li>
       </div>
     </header>
