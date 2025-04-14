@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from "react";
+'use client';
 
-const Carrinho = () => {
+import { useEffect, useState } from "react";
+
+export default function Carrinho() {
   const [user, setUser] = useState(null);
   const [carrinho, setCarrinho] = useState([]);
   const [games, setGames] = useState([]);
 
   useEffect(() => {
-    // Recuperar os dados do usuário do localStorage
     const userStorage = JSON.parse(localStorage.getItem("user"));
     if (userStorage) {
-      setUser(userStorage); // Definir o usuário no estado
+      setUser(userStorage);
     }
 
-    // Recuperar o carrinho do usuário (também do localStorage ou de onde você armazenar)
-    const userCarrinho = JSON.parse(userStorage.userCarrinho);
+    const userCarrinho = JSON.parse(userStorage?.userCarrinho || "[]");
     if (userCarrinho) {
-      setCarrinho(userCarrinho); // Definir os itens do carrinho no estado
+      setCarrinho(userCarrinho);
     }
   }, []);
 
@@ -28,47 +28,38 @@ const Carrinho = () => {
             if (response.ok) {
               return response.json();
             } else {
-              console.error(`Failed to fetch game with ID: ${id}`);
+              console.error(`Erro ao buscar jogo com ID: ${id}`);
               return null;
             }
           })
         );
-
-        // Filter out null values for failed requests
         setGames(fetchedGames.filter((game) => game !== null));
       } catch (error) {
-        console.error("Error fetching games:", error);
+        console.error("Erro ao buscar jogos:", error);
       }
     };
 
     fetchGames();
   }, [carrinho]);
 
-  //console.log(games);
-
   const handleFinalizarCompra = () => {
-    // Aqui você pode fazer a chamada para a API de finalização da compra
     console.log("Compra finalizada com os seguintes jogos:", carrinho);
-    // Após a compra, limpar o carrinho
     const userStorage = JSON.parse(localStorage.getItem("user"));
-    const userJogos = JSON.parse(userStorage.userJogos);
+    const userJogos = JSON.parse(userStorage.userJogos || "[]");
     userJogos.push(...carrinho);
+    userStorage.userJogos = userJogos;
     userStorage.userCarrinho = [];
+    localStorage.setItem("user", JSON.stringify(userStorage));
     setCarrinho([]);
-    console.log(userJogos);
-    console.log("iiiiiiiiiiioooooooo");
   };
 
   const handleRemoverItem = (gameId) => {
-    // Filter out the game from the carrinho
     const updatedCarrinho = carrinho.filter((jogo) => jogo !== gameId);
     setCarrinho(updatedCarrinho);
-  
-    // Filter out the game from the games array
+
     const updatedGames = games.filter((game) => game.id !== gameId);
     setGames(updatedGames);
-  
-    // Update the localStorage
+
     const userStorage = JSON.parse(localStorage.getItem("user"));
     userStorage.userCarrinho = JSON.stringify(updatedCarrinho);
     localStorage.setItem("user", JSON.stringify(userStorage));
@@ -100,6 +91,4 @@ const Carrinho = () => {
       )}
     </div>
   );
-};
-
-export default Carrinho;
+}
