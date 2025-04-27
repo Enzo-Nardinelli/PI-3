@@ -65,6 +65,10 @@ function EditUser() {
 
         console.log('Usuário atualizado com sucesso');
         setIsEditing(false); // Desativa o modo de edição após salvar
+
+        // Printando o localStorage após a atualização
+        const updatedLocalStorageUser = JSON.parse(localStorage.getItem('userLoggedIn'));
+        console.log('Dados do usuário no localStorage após atualização:', updatedLocalStorageUser);
       } else {
         throw new Error('Erro ao atualizar o usuário');
       }
