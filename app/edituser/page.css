@@ -1,63 +1,37 @@
+/* CSS para EditUser */
 .app01 {
-    background-color: #427AA1; /* Fundo azul igual ao CSS antigo */
-    color: white; /* Cor do texto em branco */
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  background-color: #427aa1; /* Azul de fundo */
+  height: 100vh; /* Garantir que ocupe toda a altura da tela */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .centered-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    background-color: #ffffff; /* Fundo claro para o formulário */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    width: 100%;
-    max-width: 400px;
+  background-color: white; /* Fundo branco para o formulário */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
 }
 
-.centered-form input,
-.centered-form button {
-    width: 100%;
-    margin: 8px 0;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+form {
+  display: flex;
+  flex-direction: column;
 }
 
-.centered-form input {
-    background-color: #ffffff; /* Fundo branco para os campos de input */
-    color: #333333; /* Texto escuro para garantir visibilidade */
+form div {
+  margin-bottom: 15px;
 }
 
-.centered-form button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
+form label {
+  font-weight: bold;
+  color: #333; /* Cor do texto dos labels */
 }
 
-.centered-form button:hover {
-    background-color: #0056b3;
-}
-
-.centered-form label {
-    color: #000000; /* Cor preta para os rótulos */
-    margin-bottom: 5px;
-    text-align: left;
-}
-
-.centered-form div {
-    margin-bottom: 10px;
-    width: 100%;
-}
-
-.centered-form span {
-    color: #333333; /* Cor escura para o texto das informações ao lado dos labels */
-    font-weight: normal;
+form span {
+  color: #333; /* Cor do texto das informações */
+  margin-left: 10px;
+  font-size: 16px;
 }
