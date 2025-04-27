@@ -8,8 +8,8 @@ function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [gender, setGender] = useState('');
-  const [birthdate, setBirthdate] = useState('');
+  const [genero, setgenero] = useState('');
+  const [dataNascimento, setdataNascimento] = useState('');
   const [cep, setCep] = useState('');
   const [logradouro, setLogradouro] = useState('');
   const [numero, setNumero] = useState('');
@@ -43,7 +43,7 @@ function Register() {
     e.preventDefault();
 
     // Verifica se todos os campos foram preenchidos
-    if (!username || !email || !password || !confirmPassword || !gender || !birthdate ||
+    if (!username || !email || !password || !confirmPassword || !genero || !dataNascimento ||
         !cep || !logradouro || !numero || !bairro || !cidade || !uf) {
       alert("Por favor, preencha todos os campos.");
       return;
@@ -66,8 +66,8 @@ function Register() {
       username,
       email,
       password,
-      gender,
-      birthdate,
+      genero,
+      dataNascimento,
       enderecoFaturamento: {
         cep,
         logradouro,
@@ -89,6 +89,11 @@ function Register() {
 
       const data = await response.json();
       console.log("User registered:", data);
+
+      // Armazena os dados no localStorage sem a senha
+      const { password, ...userWithoutPassword } = data;
+      localStorage.setItem("user", JSON.stringify(userWithoutPassword));
+
       navigate("/login");
     } catch (error) {
       console.error("Registration failed:", error);
@@ -140,8 +145,8 @@ function Register() {
 
           {/* Campos de Gênero e Data de Nascimento */}
           <select
-            value={gender}
-            onChange={(e) => setGender(e.target.value)}
+            value={genero}
+            onChange={(e) => setgenero(e.target.value)}
             placeholder="Gênero"
           >
             <option value="">Selecione o Gênero</option>
@@ -152,8 +157,8 @@ function Register() {
 
           <input
             type="date"
-            value={birthdate}
-            onChange={(e) => setBirthdate(e.target.value)}
+            value={dataNascimento}
+            onChange={(e) => setdataNascimento(e.target.value)}
             placeholder="Data de Nascimento"
             max={getCurrentDate()}  // Impede a seleção de uma data maior que a data atual
           />
