@@ -12,6 +12,7 @@ import GameDetails from "./GameDetails/page";
 import { AuthProvider } from "./authProvider/authProvider";
 import Carrinho from "./carrinho/page";
 import CartPage from "./carrinho2/cartPage";
+import edituser from "./edituser/page";
 
 export default function Inicio() {
   return (
@@ -24,7 +25,8 @@ export default function Inicio() {
           <Route path="/game/:id" element={<GameDetails />} />
           <Route path="/carrinho" element={<Carrinho/>} />
           <Route path="/carrinho2" element={<CartPage/>} />
+          <Route path="/edituser" element={<edituser/>} />
         </Routes>
       </Router>
     )
-}  
+}
