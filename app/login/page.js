@@ -1,11 +1,11 @@
-'use client'
+'use client';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -13,7 +13,7 @@ function Login() {
       const response = await fetch("http://localhost:8080/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }), // Envia email e senha
+        body: JSON.stringify({ email, password }),
       });
 
       if (!response.ok) {
@@ -22,27 +22,25 @@ function Login() {
 
       const data = await response.json();
 
-      // Verifique se a resposta está no formato correto
       if (data.user) {
-        // Armazenando as informações do usuário no localStorage
-        localStorage.setItem("userLoggedIn", JSON.stringify(data.user));
-        console.log("User logged in:", data.user);  // Exibe os dados do usuário no console
+        const userWithPassword = { ...data.user, password };
+        localStorage.setItem("userLoggedIn", JSON.stringify(userWithPassword));
+        console.log("User logged in:", userWithPassword);
 
-        // Verifique se os dados estão sendo armazenados corretamente
         const userFromStorage = JSON.parse(localStorage.getItem("userLoggedIn"));
-        console.log("User stored in localStorage:", userFromStorage); // Mostra os dados armazenados no localStorage
+        console.log("User stored in localStorage:", userFromStorage);
       } else {
         console.error("Invalid user data:", data);
       }
 
-      navigate("/");  // Redireciona para a página inicial após o login
+      router.push("/");
     } catch (error) {
       console.error("Login failed:", error);
     }
   };
 
   const handleClick = () => {
-    navigate("/register");
+    router.push("/register");
   };
 
   return (
