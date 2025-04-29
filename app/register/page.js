@@ -148,10 +148,19 @@ function Register() {
             value={genero}
             onChange={(e) => setgenero(e.target.value)}
             placeholder="Gênero"
+            style={{
+              padding: '10px',
+              borderRadius: '4px',
+              border: '1px solid #ccc',
+              width: '100%', // Garante que ele ocupe toda a largura do formulário
+              marginTop: '10px', // Alinha com os outros campos
+              marginBottom: '10px' // Espaçamento para não grudar no próximo campo
+            }}
           >
-            <option value="">Selecione o Gênero</option>
+            <option value="">Gênero</option>
             <option value="masculino">Masculino</option>
             <option value="feminino">Feminino</option>
+            <option value="prefiro não dizer">Prefiro não dizer</option>
             <option value="outro">Outro</option>
           </select>
 
