@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react';
 import './page.css';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 
 function Register() {
   const [username, setUsername] = useState('');
@@ -16,11 +16,11 @@ function Register() {
   const [bairro, setBairro] = useState('');
   const [cidade, setCidade] = useState('');
   const [uf, setUf] = useState('');
-  const navigate = useNavigate();
+  const router = useRouter();
 
   // Função para validar o CEP
   const handleCepBlur = async () => {
-    if (cep.length === 8) {  // Verifica se o CEP tem 8 caracteres
+    if (cep.length === 8) {
       try {
         const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
         const data = await response.json();
@@ -78,7 +78,7 @@ function Register() {
       }
     };
 
-    console.log(userData);  // Aqui você pode ver os dados do usuário, incluindo o nome, endereço, e-mail, etc.
+    console.log("User data for registration:", userData);  // Manter a exibição no console
 
     try {
       const response = await fetch("http://localhost:8080/api/auth/register", {
@@ -88,20 +88,23 @@ function Register() {
       });
 
       const data = await response.json();
-      console.log("User registered:", data);
+      console.log("User registered:", data);  // Exibe no console após a resposta da API
 
       // Armazena os dados no localStorage sem a senha
       const { password, ...userWithoutPassword } = data;
       localStorage.setItem("user", JSON.stringify(userWithoutPassword));
 
-      navigate("/login");
+      // Mostrar no console que o registro foi bem-sucedido
+      console.log("User registered with SUCCESS:", userWithoutPassword);
+
+      router.push("/login");  // Redireciona para o login após o cadastro
     } catch (error) {
       console.error("Registration failed:", error);
     }
   };
 
   const btnLogin = () => {
-    navigate("/login");
+    router.push("/login");
   };
 
   // Função para obter a data atual no formato "YYYY-MM-DD"
@@ -142,8 +145,6 @@ function Register() {
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="Confirmar Senha"
           />
-
-          {/* Campos de Gênero e Data de Nascimento */}
           <select
             value={genero}
             onChange={(e) => setgenero(e.target.value)}
@@ -152,9 +153,9 @@ function Register() {
               padding: '10px',
               borderRadius: '4px',
               border: '1px solid #ccc',
-              width: '100%', // Garante que ele ocupe toda a largura do formulário
-              marginTop: '10px', // Alinha com os outros campos
-              marginBottom: '10px' // Espaçamento para não grudar no próximo campo
+              width: '100%',
+              marginTop: '10px',
+              marginBottom: '10px'
             }}
           >
             <option value="">Gênero</option>
@@ -163,16 +164,13 @@ function Register() {
             <option value="prefiro não dizer">Prefiro não dizer</option>
             <option value="outro">Outro</option>
           </select>
-
           <input
             type="date"
             value={dataNascimento}
             onChange={(e) => setdataNascimento(e.target.value)}
             placeholder="Data de Nascimento"
-            max={getCurrentDate()}  // Impede a seleção de uma data maior que a data atual
+            max={getCurrentDate()}
           />
-
-          {/* Campos de Endereço */}
           <input
             type="text"
             value={cep}
@@ -210,7 +208,6 @@ function Register() {
             onChange={(e) => setUf(e.target.value)}
             placeholder="UF"
           />
-
           <button type="submit">Confirmar</button>
           <button onClick={btnLogin}>Login</button>
         </form>
