@@ -1,10 +1,11 @@
-/* CSS para EditUser */
 .app01 {
   background-color: #427aa1; /* Azul de fundo */
-  height: 100vh; /* Garantir que ocupe toda a altura da tela */
+  min-height: 100vh; /* Agora é min-height em vez de height */
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* Começa do topo */
+  padding: 40px 20px; /* Espaço para não colar na borda */
+  overflow-y: auto; /* Permite scroll se precisar */
 }
 
 .centered-form {
