@@ -194,7 +194,18 @@ function EditUser() {
           <div>
             <label>Gênero: </label><br />
             {isEditing ? (
-              <select name="genero" value={user.genero || ""} onChange={handleChange}>
+              <select
+                name="genero"
+                value={user.genero || ""}
+                onChange={handleChange}
+                style={{
+                  marginTop: '5px',
+                  padding: '8px',
+                  borderRadius: '4px',
+                  border: '1px solid #ccc',
+                  width: '100%',
+                }}
+              >
                 <option value="">Selecione</option>
                 <option value="Masculino">Masculino</option>
                 <option value="Feminino">Feminino</option>
