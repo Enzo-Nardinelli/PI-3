@@ -257,28 +257,27 @@ function EditUser() {
             ) : (
               <p>Nenhum endereço de entrega cadastrado.</p>
             )}
-
-            <button type="button" onClick={() => setMostrarNovoEndereco(true)}>
-              Adicionar Endereço de Entrega
-            </button>
-
-            {mostrarNovoEndereco && (
-              <div>
-                <h4>Novo Endereço de Entrega</h4>
-                <input name="cep" placeholder="CEP" value={novoEnderecoEntrega.cep} onChange={handleNovoEnderecoChange} onBlur={handleNovoEnderecoCepBlur} />
-                <input name="logradouro" placeholder="Logradouro" value={novoEnderecoEntrega.logradouro} onChange={handleNovoEnderecoChange} />
-                <input name="numero" placeholder="Número" value={novoEnderecoEntrega.numero} onChange={handleNovoEnderecoChange} />
-                <input name="complemento" placeholder="Complemento" value={novoEnderecoEntrega.complemento} onChange={handleNovoEnderecoChange} />
-                <input name="bairro" placeholder="Bairro" value={novoEnderecoEntrega.bairro} onChange={handleNovoEnderecoChange} />
-                <input name="cidade" placeholder="Cidade" value={novoEnderecoEntrega.cidade} onChange={handleNovoEnderecoChange} />
-                <input name="uf" placeholder="UF" value={novoEnderecoEntrega.uf} onChange={handleNovoEnderecoChange} />
-                <button type="button" onClick={handleAdicionarEnderecoEntrega}>Salvar Endereço</button>
-              </div>
-            )}
           </div>
 
           {isEditing && (
             <>
+              <div>
+                <button type="button" onClick={() => setMostrarNovoEndereco(true)}>Adicionar Novo Endereço de Entrega</button>
+              </div>
+
+              {mostrarNovoEndereco && (
+                <div>
+                  <h3>Adicionar Novo Endereço de Entrega</h3>
+                  <input name="cep" placeholder="CEP" value={novoEnderecoEntrega.cep} onChange={handleNovoEnderecoChange} onBlur={handleNovoEnderecoCepBlur} />
+                  <input name="logradouro" placeholder="Logradouro" value={novoEnderecoEntrega.logradouro} onChange={handleNovoEnderecoChange} />
+                  <input name="numero" placeholder="Número" value={novoEnderecoEntrega.numero} onChange={handleNovoEnderecoChange} />
+                  <input name="bairro" placeholder="Bairro" value={novoEnderecoEntrega.bairro} onChange={handleNovoEnderecoChange} />
+                  <input name="cidade" placeholder="Cidade" value={novoEnderecoEntrega.cidade} onChange={handleNovoEnderecoChange} />
+                  <input name="uf" placeholder="UF" value={novoEnderecoEntrega.uf} onChange={handleNovoEnderecoChange} />
+                  <button type="button" onClick={handleAdicionarEnderecoEntrega}>Salvar Endereço</button>
+                </div>
+              )}
+
               <div>
                 <label>Nova Senha: </label>
                 <input type="password" value={novaSenha} onChange={(e) => setNovaSenha(e.target.value)} />
