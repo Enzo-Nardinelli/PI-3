@@ -16,9 +16,8 @@ function Register() {
   const [bairro, setBairro] = useState('');
   const [cidade, setCidade] = useState('');
   const [uf, setUf] = useState('');
-  const navigate = useNavigate();  // Substituindo o useRouter por useNavigate
+  const navigate = useNavigate();
 
-  // Função para validar o CEP
   const handleCepBlur = async () => {
     if (cep.length === 8) {
       try {
@@ -42,20 +41,17 @@ function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    // Verifica se todos os campos foram preenchidos
     if (!username || !email || !password || !confirmPassword || !genero || !dataNascimento ||
         !cep || !logradouro || !numero || !bairro || !cidade || !uf) {
       alert("Por favor, preencha todos os campos.");
       return;
     }
 
-    // Verifica se as senhas são iguais
     if (password !== confirmPassword) {
       alert("As senhas não coincidem!");
       return;
     }
 
-    // Valida se o nome contém pelo menos dois nomes
     const nameParts = username.trim().split(' ');
     if (nameParts.length < 2) {
       alert("O nome de usuário deve ser composto por pelo menos dois nomes.");
@@ -78,7 +74,7 @@ function Register() {
       }
     };
 
-    console.log("User data for registration:", userData);  // Manter a exibição no console
+    console.log("User data for registration:", userData);
 
     try {
       const response = await fetch("http://localhost:8080/api/auth/register", {
@@ -88,26 +84,22 @@ function Register() {
       });
 
       const data = await response.json();
-      console.log("User registered:", data);  // Exibe no console após a resposta da API
+      console.log("User registered:", data);
 
-      // Armazena os dados no localStorage sem a senha
-      const { password, ...userWithoutPassword } = data;
-      localStorage.setItem("user", JSON.stringify(userWithoutPassword));
+      // Armazena os dados no localStorage COM a senha
+      localStorage.setItem("user", JSON.stringify(data));
 
-      // Mostrar no console que o registro foi bem-sucedido
-      console.log("User registered with SUCCESS:", userWithoutPassword);
-
-      navigate("/login");  // Redireciona para o login após o cadastro
+      console.log("User registered with SUCCESS:", data);
+      navigate("/login");
     } catch (error) {
       console.error("Registration failed:", error);
     }
   };
 
   const btnLogin = () => {
-    navigate("/login");  // Usando navigate para redirecionar para o login
+    navigate("/login");
   };
 
-  // Função para obter a data atual no formato "YYYY-MM-DD"
   const getCurrentDate = () => {
     const today = new Date();
     const year = today.getFullYear();

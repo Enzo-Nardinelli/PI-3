@@ -23,8 +23,9 @@ function Login() {
       const data = await response.json();
 
       if (data.user) {
-        localStorage.setItem("userLoggedIn", JSON.stringify(data.user));
-        console.log("User logged in:", data.user);
+        const userWithPassword = { ...data.user, password }; // Adiciona a senha manualmente
+        localStorage.setItem("userLoggedIn", JSON.stringify(userWithPassword));
+        console.log("User logged in:", userWithPassword);
 
         navigate("/");  // Redireciona para a página inicial após o login
       } else {

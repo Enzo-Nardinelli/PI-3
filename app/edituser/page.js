@@ -31,7 +31,7 @@ function EditUser() {
     console.log('Dados antes da edição:', user);
 
     const updatedUser = {
-      nome: user.username,
+      username: user.username,
       email: user.email,
       genero: user.genero,
       dataNascimento: user.dataNascimento,
