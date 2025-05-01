@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react';
 import './page.css';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 
 function Register() {
   const [username, setUsername] = useState('');
@@ -16,7 +16,7 @@ function Register() {
   const [bairro, setBairro] = useState('');
   const [cidade, setCidade] = useState('');
   const [uf, setUf] = useState('');
-  const router = useRouter();
+  const navigate = useNavigate();  // Substituindo o useRouter por useNavigate
 
   // Função para validar o CEP
   const handleCepBlur = async () => {
@@ -97,14 +97,14 @@ function Register() {
       // Mostrar no console que o registro foi bem-sucedido
       console.log("User registered with SUCCESS:", userWithoutPassword);
 
-      router.push("/login");  // Redireciona para o login após o cadastro
+      navigate("/login");  // Redireciona para o login após o cadastro
     } catch (error) {
       console.error("Registration failed:", error);
     }
   };
 
   const btnLogin = () => {
-    router.push("/login");
+    navigate("/login");  // Usando navigate para redirecionar para o login
   };
 
   // Função para obter a data atual no formato "YYYY-MM-DD"

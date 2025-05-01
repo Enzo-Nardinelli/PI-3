@@ -1,11 +1,11 @@
 'use client';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -23,24 +23,20 @@ function Login() {
       const data = await response.json();
 
       if (data.user) {
-        const userWithPassword = { ...data.user, password };
-        localStorage.setItem("userLoggedIn", JSON.stringify(userWithPassword));
-        console.log("User logged in:", userWithPassword);
+        localStorage.setItem("userLoggedIn", JSON.stringify(data.user));
+        console.log("User logged in:", data.user);
 
-        const userFromStorage = JSON.parse(localStorage.getItem("userLoggedIn"));
-        console.log("User stored in localStorage:", userFromStorage);
+        navigate("/");  // Redireciona para a página inicial após o login
       } else {
         console.error("Invalid user data:", data);
       }
-
-      router.push("/");
     } catch (error) {
       console.error("Login failed:", error);
     }
   };
 
   const handleClick = () => {
-    router.push("/register");
+    navigate("/register"); // Redireciona para a página de registro
   };
 
   return (
