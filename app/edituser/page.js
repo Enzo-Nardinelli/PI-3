@@ -67,7 +67,7 @@ function EditUser() {
       email: user.email,
       genero: user.genero,
       dataNascimento: user.dataNascimento,
-      password: novaSenha || undefined,
+      password: novaSenha || user.password, // Se novaSenha não for fornecida, mantém a senha atual
       enderecoFaturamento: { ...user.enderecoFaturamento },
       enderecosEntrega: user.enderecosEntrega || []
     };
@@ -262,7 +262,6 @@ function EditUser() {
               Adicionar Endereço de Entrega
             </button>
 
-
             {mostrarNovoEndereco && (
               <div>
                 <h4>Novo Endereço de Entrega</h4>
@@ -291,9 +290,16 @@ function EditUser() {
             </>
           )}
 
-          <button type="button" onClick={isEditing ? handleSave : handleEdit}>
-            {isEditing ? "Salvar" : "Editar"}
-          </button>
+          <div>
+            {isEditing ? (
+              <div>
+                <button type="button" onClick={handleSave}>Salvar</button>
+                <button type="button" onClick={() => setIsEditing(false)}>Cancelar</button>
+              </div>
+            ) : (
+              <button type="button" onClick={handleEdit}>Editar</button>
+            )}
+          </div>
         </form>
       </div>
     </div>
