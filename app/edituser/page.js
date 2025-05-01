@@ -166,6 +166,13 @@ function EditUser() {
     });
   };
 
+  // Função para formatar a data no formato DD/MM/YYYY
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  };
+
   if (loading) return <div>Carregando...</div>;
   if (!user) return <div>Usuário não encontrado</div>;
 
@@ -222,7 +229,7 @@ function EditUser() {
             {isEditing ? (
               <input type="date" name="dataNascimento" value={user.dataNascimento || ""} onChange={handleChange} />
             ) : (
-              <span>{user.dataNascimento}</span>
+              <span>{formatDate(user.dataNascimento)}</span>
             )}
           </div>
 
@@ -286,20 +293,16 @@ function EditUser() {
                 <label>Confirmar Nova Senha: </label>
                 <input type="password" value={confirmarSenha} onChange={(e) => setConfirmarSenha(e.target.value)} />
               </div>
+              <button type="button" onClick={handleSave}>Salvar</button>
             </>
           )}
-
-          <div>
-            {isEditing ? (
-              <div>
-                <button type="button" onClick={handleSave}>Salvar</button>
-                <button type="button" onClick={() => setIsEditing(false)}>Cancelar</button>
-              </div>
-            ) : (
-              <button type="button" onClick={handleEdit}>Editar</button>
-            )}
-          </div>
         </form>
+
+        {!isEditing && (
+          <div>
+            <button onClick={handleEdit}>Editar</button>
+          </div>
+        )}
       </div>
     </div>
   );
