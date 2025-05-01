@@ -6,6 +6,8 @@ function EditUser() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
+  const [novaSenha, setNovaSenha] = useState('');
+  const [confirmarSenha, setConfirmarSenha] = useState('');
 
   useEffect(() => {
     const storedUser = localStorage.getItem("userLoggedIn");
@@ -30,12 +32,17 @@ function EditUser() {
   const handleSave = async () => {
     console.log('Dados antes da edição:', user);
 
+    if (novaSenha && novaSenha !== confirmarSenha) {
+      alert('As senhas não coincidem!');
+      return;
+    }
+
     const updatedUser = {
       username: user.username,
       email: user.email,
       genero: user.genero,
       dataNascimento: user.dataNascimento,
-      password: user.password,
+      password: novaSenha ? novaSenha : user.password,
       enderecoFaturamento: {
         cep: user.enderecoFaturamento.cep,
         logradouro: user.enderecoFaturamento.logradouro,
@@ -62,15 +69,14 @@ function EditUser() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(updatedUser), // Envia só os campos necessários (sem password)
+        body: JSON.stringify(updatedUser),
       });
 
       if (response.ok) {
-        // Atualiza o localStorage mantendo a senha que já existia
         const updatedLocalUser = { ...user, ...updatedUser };
         localStorage.setItem('userLoggedIn', JSON.stringify(updatedLocalUser));
         console.log('Usuário atualizado com sucesso');
-        setUser(updatedLocalUser); // Atualiza o state também
+        setUser(updatedLocalUser);
         setIsEditing(false);
 
         const updatedLocalStorageUser = JSON.parse(localStorage.getItem('userLoggedIn'));
@@ -137,7 +143,6 @@ function EditUser() {
     <div className='app01'>
       <div className='centered-form'>
         <form>
-          {/* Formulário igual ao seu, sem alterações */}
           <div>
             <label>Nome: </label>
             {isEditing ? (
@@ -166,31 +171,31 @@ function EditUser() {
             )}
           </div>
 
-          <div>
-            <label>Gênero: </label><br />
-            {isEditing ? (
-              <select
-                name="genero"
-                value={user.genero || ""}
-                onChange={handleChange}
-                style={{
-                  marginTop: '5px',
-                  padding: '8px',
-                  borderRadius: '4px',
-                  border: '1px solid #ccc',
-                  width: '100%'
-                }}
-              >
-                <option value="">Selecione</option>
-                <option value="Masculino">Masculino</option>
-                <option value="Feminino">Feminino</option>
-                <option value="Outro">Outro</option>
-                <option value="Prefiro não dizer">Prefiro não dizer</option>
-              </select>
-            ) : (
-              <span>{user.genero}</span>
-            )}
-          </div>
+                    <div>
+                      <label>Gênero: </label><br />
+                      {isEditing ? (
+                        <select
+                          name="genero"
+                          value={user.genero || ""}
+                          onChange={handleChange}
+                          style={{
+                            marginTop: '5px',
+                            padding: '8px',
+                            borderRadius: '4px',
+                            border: '1px solid #ccc',
+                            width: '100%'
+                          }}
+                        >
+                          <option value="">Selecione</option>
+                          <option value="Masculino">Masculino</option>
+                          <option value="Feminino">Feminino</option>
+                          <option value="Outro">Outro</option>
+                          <option value="Prefiro não dizer">Prefiro não dizer</option>
+                        </select>
+                      ) : (
+                        <span>{user.genero}</span>
+                      )}
+                    </div>
 
           <div>
             <label>Data de Nascimento: </label>
@@ -206,7 +211,6 @@ function EditUser() {
             )}
           </div>
 
-          {/* Endereço */}
           <div>
             <label>CEP: </label>
             {isEditing ? (
@@ -292,7 +296,28 @@ function EditUser() {
             )}
           </div>
 
-          {/* Botões */}
+          {/* Campos de senha ao editar */}
+          {isEditing && (
+            <>
+              <div>
+                <label>Nova Senha: </label>
+                <input
+                  type="password"
+                  value={novaSenha}
+                  onChange={(e) => setNovaSenha(e.target.value)}
+                />
+              </div>
+              <div>
+                <label>Confirmar Nova Senha: </label>
+                <input
+                  type="password"
+                  value={confirmarSenha}
+                  onChange={(e) => setConfirmarSenha(e.target.value)}
+                />
+              </div>
+            </>
+          )}
+
           {!isEditing ? (
             <button type="button" onClick={handleEdit}>Editar</button>
           ) : (
