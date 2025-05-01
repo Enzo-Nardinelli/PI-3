@@ -171,31 +171,31 @@ function EditUser() {
             )}
           </div>
 
-                    <div>
-                      <label>Gênero: </label><br />
-                      {isEditing ? (
-                        <select
-                          name="genero"
-                          value={user.genero || ""}
-                          onChange={handleChange}
-                          style={{
-                            marginTop: '5px',
-                            padding: '8px',
-                            borderRadius: '4px',
-                            border: '1px solid #ccc',
-                            width: '100%'
-                          }}
-                        >
-                          <option value="">Selecione</option>
-                          <option value="Masculino">Masculino</option>
-                          <option value="Feminino">Feminino</option>
-                          <option value="Outro">Outro</option>
-                          <option value="Prefiro não dizer">Prefiro não dizer</option>
-                        </select>
-                      ) : (
-                        <span>{user.genero}</span>
-                      )}
-                    </div>
+            <div>
+              <label>Gênero: </label><br />
+              {isEditing ? (
+                <select
+                  name="genero"
+                  value={user.genero || ""}
+                  onChange={handleChange}
+                  style={{
+                    marginTop: '5px',
+                    padding: '8px',
+                    borderRadius: '4px',
+                    border: '1px solid #ccc',
+                    width: '100%'
+                  }}
+                >
+                  <option value="">Selecione</option>
+                  <option value="Masculino">Masculino</option>
+                  <option value="Feminino">Feminino</option>
+                  <option value="Outro">Outro</option>
+                  <option value="Prefiro não dizer">Prefiro não dizer</option>
+                </select>
+              ) : (
+                <span>{user.genero}</span>
+              )}
+            </div>
 
           <div>
             <label>Data de Nascimento: </label>
@@ -212,89 +212,47 @@ function EditUser() {
           </div>
 
           <div>
-            <label>CEP: </label>
+            <label>Endereço Faturamento: </label>
             {isEditing ? (
-              <input
-                type="text"
-                name="cep"
-                value={user.enderecoFaturamento.cep || ""}
-                onChange={handleChange}
-                onBlur={handleCepBlur}
-              />
+              <div>
+                <input
+                  type="text"
+                  name="logradouro"
+                  value={user.enderecoFaturamento.logradouro || ""}
+                  onChange={handleChange}
+                />
+                <input
+                  type="text"
+                  name="numero"
+                  value={user.enderecoFaturamento.numero || ""}
+                  onChange={handleChange}
+                />
+                <input
+                  type="text"
+                  name="bairro"
+                  value={user.enderecoFaturamento.bairro || ""}
+                  onChange={handleChange}
+                />
+                <input
+                  type="text"
+                  name="cidade"
+                  value={user.enderecoFaturamento.cidade || ""}
+                  onChange={handleChange}
+                />
+                <input
+                  type="text"
+                  name="uf"
+                  value={user.enderecoFaturamento.uf || ""}
+                  onChange={handleChange}
+                />
+              </div>
             ) : (
-              <span>{user.enderecoFaturamento.cep || ""}</span>
+              <span>
+                {user.enderecoFaturamento.logradouro}, {user.enderecoFaturamento.numero}, {user.enderecoFaturamento.bairro}, {user.enderecoFaturamento.cidade}, {user.enderecoFaturamento.uf}
+              </span>
             )}
           </div>
 
-          <div>
-            <label>Logradouro: </label>
-            {isEditing ? (
-              <input
-                type="text"
-                name="logradouro"
-                value={user.enderecoFaturamento.logradouro || ""}
-                onChange={handleChange}
-              />
-            ) : (
-              <span>{user.enderecoFaturamento.logradouro}</span>
-            )}
-          </div>
-
-          <div>
-            <label>Número: </label>
-            {isEditing ? (
-              <input
-                type="text"
-                name="numero"
-                value={user.enderecoFaturamento.numero || ""}
-                onChange={handleChange}
-              />
-            ) : (
-              <span>{user.enderecoFaturamento.numero}</span>
-            )}
-          </div>
-
-          <div>
-            <label>Bairro: </label>
-            {isEditing ? (
-              <input
-                type="text"
-                name="bairro"
-                value={user.enderecoFaturamento.bairro || ""}
-                onChange={handleChange}
-              />
-            ) : (
-              <span>{user.enderecoFaturamento.bairro}</span>
-            )}
-          </div>
-
-          <div>
-            <label>Cidade: </label>
-            {isEditing ? (
-              <input
-                type="text"
-                name="cidade"
-                value={user.enderecoFaturamento.cidade || ""}
-                onChange={handleChange}
-              />
-            ) : (
-              <span>{user.enderecoFaturamento.cidade}</span>
-            )}
-          </div>
-
-          <div>
-            <label>UF: </label>
-            {isEditing ? (
-              <input
-                type="text"
-                name="uf"
-                value={user.enderecoFaturamento.uf || ""}
-                onChange={handleChange}
-              />
-            ) : (
-              <span>{user.enderecoFaturamento.uf}</span>
-            )}
-          </div>
 
           {/* Campos de senha ao editar */}
           {isEditing && (
