@@ -1,15 +1,15 @@
 .app01 {
-  background-color: #427aa1; /* Azul de fundo */
-  min-height: 100vh; /* Agora é min-height em vez de height */
+  background-color: #427aa1;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* Começa do topo */
-  padding: 40px 20px; /* Espaço para não colar na borda */
-  overflow-y: auto; /* Permite scroll se precisar */
+  align-items: flex-start;
+  padding: 40px 20px;
+  overflow-y: auto;
 }
 
 .centered-form {
-  background-color: white; /* Fundo branco para o formulário */
+  background-color: white;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -28,11 +28,21 @@ form div {
 
 form label {
   font-weight: bold;
-  color: #333; /* Cor do texto dos labels */
+  color: #333;
 }
 
 form span {
-  color: #333; /* Cor do texto das informações */
+  color: #333;
   margin-left: 10px;
   font-size: 16px;
+}
+
+ul {
+  padding-left: 20px; /* opcional: espaçamento da lista */
+}
+
+ul li {
+  color: #333; /* mesma cor usada no form */
+  font-size: 16px;
+  margin-bottom: 5px;
 }
