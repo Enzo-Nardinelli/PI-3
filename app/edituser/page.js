@@ -166,6 +166,12 @@ function EditUser() {
     });
   };
 
+  const formatDate = (dateString) => {
+      if (!dateString) return '';
+      const [year, month, day] = dateString.split('-');
+      return `${day}/${month}/${year}`;
+    };
+
   if (loading) return <div>Carregando...</div>;
   if (!user) return <div>Usuário não encontrado</div>;
 
