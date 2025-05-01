@@ -10,14 +10,17 @@ function EditUser() {
   const [novaSenha, setNovaSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
   const [mostrarNovoEndereco, setMostrarNovoEndereco] = useState(false);
-  const [novoEnderecoEntrega, setNovoEnderecoEntrega] = useState({
+
+  const enderecoInicial = {
     cep: '',
     logradouro: '',
     numero: '',
+    complemento: '',
     bairro: '',
     cidade: '',
     uf: ''
-  });
+  };
+  const [novoEnderecoEntrega, setNovoEnderecoEntrega] = useState(enderecoInicial);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("userLoggedIn");
@@ -27,41 +30,27 @@ function EditUser() {
     setLoading(false);
   }, []);
 
-  if (loading) return <div>Carregando...</div>;
-  if (!user) return <div>Usuário não encontrado</div>;
-
   const handleNovoEnderecoChange = (e) => {
     const { name, value } = e.target;
     setNovoEnderecoEntrega((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleAdicionarEnderecoEntrega = () => {
-    if (!novoEnderecoEntrega.cep) {
-      alert("Preencha o CEP.");
+    if (!novoEnderecoEntrega.cep || !novoEnderecoEntrega.logradouro || !novoEnderecoEntrega.numero) {
+      alert("Preencha todos os campos obrigatórios (CEP, Logradouro, Número).");
       return;
     }
 
-    console.log("Endereço a ser adicionado:", novoEnderecoEntrega);
+    const novoUsuario = {
+      ...user,
+      enderecosEntrega: [...(user.enderecosEntrega || []), novoEnderecoEntrega]
+    };
 
-    setUser((prevUser) => {
-      const updatedUser = {
-        ...prevUser,
-        enderecosEntrega: [...(prevUser.enderecosEntrega || []), novoEnderecoEntrega]
-      };
-      console.log("Usuário após adicionar o endereço:", updatedUser);
-      return updatedUser;
-    });
+    setUser(novoUsuario);
+    localStorage.setItem("userLoggedIn", JSON.stringify(novoUsuario));
+    console.log("Novo endereço adicionado:", novoEnderecoEntrega);
 
-    setNovoEnderecoEntrega({
-      cep: "",
-      logradouro: "",
-      numero: "",
-      complemento: "",
-      bairro: "",
-      cidade: "",
-      uf: ""
-    });
-
+    setNovoEnderecoEntrega(enderecoInicial);
     setMostrarNovoEndereco(false);
   };
 
@@ -73,23 +62,19 @@ function EditUser() {
       return;
     }
 
-    console.log("Dados antes da edição:", user);
-
     const updatedUser = {
       username: user.username,
       email: user.email,
       genero: user.genero,
       dataNascimento: user.dataNascimento,
-      password: novaSenha || user.password,
+      password: novaSenha || undefined,
       enderecoFaturamento: { ...user.enderecoFaturamento },
       enderecosEntrega: user.enderecosEntrega || []
     };
 
-    console.log("Dados a serem atualizados:", updatedUser);
-
     const id = user.id;
     if (!id) {
-      console.error('Usuário não encontrado');
+      console.error('ID do usuário não encontrado');
       return;
     }
 
@@ -102,10 +87,14 @@ function EditUser() {
 
       if (response.ok) {
         const updatedLocalUser = { ...user, ...updatedUser };
+        delete updatedLocalUser.password;
+
         localStorage.setItem('userLoggedIn', JSON.stringify(updatedLocalUser));
         setUser(updatedLocalUser);
-        console.log("Usuário atualizado com sucesso:", updatedLocalUser);
         setIsEditing(false);
+        setNovaSenha('');
+        setConfirmarSenha('');
+        console.log("Usuário atualizado com sucesso:", updatedLocalUser);
       } else {
         throw new Error('Erro ao atualizar o usuário');
       }
@@ -132,70 +121,62 @@ function EditUser() {
     }
   };
 
-  const handleCepBlur = async () => {
-    const cep = user.enderecoFaturamento.cep;
+  const fetchCepInfo = async (cep, callback) => {
     if (cep && cep.length === 8) {
       try {
         const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
         const data = await response.json();
         if (!data.erro) {
-          setUser((prev) => ({
-            ...prev,
-            enderecoFaturamento: {
-              ...prev.enderecoFaturamento,
-              logradouro: data.logradouro,
-              bairro: data.bairro,
-              cidade: data.localidade,
-              uf: data.uf
-            }
-          }));
+          callback(data);
         } else {
           alert("CEP não encontrado!");
         }
       } catch (error) {
-        console.error("Erro ao buscar o CEP:", error);
         alert("Erro ao buscar o CEP.");
+        console.error("Erro:", error);
       }
     }
   };
 
-  const handleNovoEnderecoCepBlur = async () => {
-    const cep = novoEnderecoEntrega.cep;
-    if (cep && cep.length === 8) {
-      try {
-        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-        const data = await response.json();
-        if (!data.erro) {
-          setNovoEnderecoEntrega((prev) => ({
-            ...prev,
-            logradouro: data.logradouro,
-            bairro: data.bairro,
-            cidade: data.localidade,
-            uf: data.uf
-          }));
-        } else {
-          alert("CEP não encontrado!");
+  const handleCepBlur = () => {
+    const cep = user?.enderecoFaturamento?.cep;
+    fetchCepInfo(cep, (data) => {
+      setUser((prev) => ({
+        ...prev,
+        enderecoFaturamento: {
+          ...prev.enderecoFaturamento,
+          logradouro: data.logradouro,
+          bairro: data.bairro,
+          cidade: data.localidade,
+          uf: data.uf
         }
-      } catch (error) {
-        console.error("Erro ao buscar o CEP:", error);
-        alert("Erro ao buscar o CEP.");
-      }
-    }
+      }));
+    });
   };
+
+  const handleNovoEnderecoCepBlur = () => {
+    fetchCepInfo(novoEnderecoEntrega.cep, (data) => {
+      setNovoEnderecoEntrega((prev) => ({
+        ...prev,
+        logradouro: data.logradouro,
+        bairro: data.bairro,
+        cidade: data.localidade,
+        uf: data.uf
+      }));
+    });
+  };
+
+  if (loading) return <div>Carregando...</div>;
+  if (!user) return <div>Usuário não encontrado</div>;
 
   return (
     <div className='app01'>
       <div className='centered-form'>
-        <form>
+        <form onSubmit={(e) => e.preventDefault()}>
           <div>
             <label>Nome: </label>
             {isEditing ? (
-              <input
-                type="text"
-                name="nome"
-                value={user.username || ""}
-                onChange={handleChange}
-              />
+              <input type="text" name="nome" value={user.username || ""} onChange={handleChange} />
             ) : (
               <span>{user.username || "Não disponível"}</span>
             )}
@@ -204,12 +185,7 @@ function EditUser() {
           <div>
             <label>Email: </label>
             {isEditing ? (
-              <input
-                type="email"
-                name="email"
-                value={user.email || ""}
-                onChange={handleChange}
-              />
+              <input type="email" name="email" value={user.email || ""} onChange={handleChange} />
             ) : (
               <span>{user.email}</span>
             )}
@@ -218,11 +194,7 @@ function EditUser() {
           <div>
             <label>Gênero: </label><br />
             {isEditing ? (
-              <select
-                name="genero"
-                value={user.genero || ""}
-                onChange={handleChange}
-              >
+              <select name="genero" value={user.genero || ""} onChange={handleChange}>
                 <option value="">Selecione</option>
                 <option value="Masculino">Masculino</option>
                 <option value="Feminino">Feminino</option>
@@ -237,31 +209,26 @@ function EditUser() {
           <div>
             <label>Data de Nascimento: </label>
             {isEditing ? (
-              <input
-                type="date"
-                name="dataNascimento"
-                value={user.dataNascimento || ""}
-                onChange={handleChange}
-              />
+              <input type="date" name="dataNascimento" value={user.dataNascimento || ""} onChange={handleChange} />
             ) : (
               <span>{user.dataNascimento}</span>
             )}
           </div>
 
           <div>
-            <label>Endereço Faturamento: </label>
+            <label>Endereço de Faturamento: </label>
             {isEditing ? (
-              <div>
-                <input type="text" name="cep" placeholder="CEP" value={user.enderecoFaturamento.cep || ""} onChange={handleChange} onBlur={handleCepBlur} />
-                <input type="text" name="logradouro" value={user.enderecoFaturamento.logradouro || ""} onChange={handleChange} />
-                <input type="text" name="numero" value={user.enderecoFaturamento.numero || ""} onChange={handleChange} />
-                <input type="text" name="bairro" value={user.enderecoFaturamento.bairro || ""} onChange={handleChange} />
-                <input type="text" name="cidade" value={user.enderecoFaturamento.cidade || ""} onChange={handleChange} />
-                <input type="text" name="uf" value={user.enderecoFaturamento.uf || ""} onChange={handleChange} />
-              </div>
+              <>
+                <input name="cep" placeholder="CEP" value={user.enderecoFaturamento?.cep || ""} onChange={handleChange} onBlur={handleCepBlur} />
+                <input name="logradouro" placeholder="Logradouro" value={user.enderecoFaturamento?.logradouro || ""} onChange={handleChange} />
+                <input name="numero" placeholder="Número" value={user.enderecoFaturamento?.numero || ""} onChange={handleChange} />
+                <input name="bairro" placeholder="Bairro" value={user.enderecoFaturamento?.bairro || ""} onChange={handleChange} />
+                <input name="cidade" placeholder="Cidade" value={user.enderecoFaturamento?.cidade || ""} onChange={handleChange} />
+                <input name="uf" placeholder="UF" value={user.enderecoFaturamento?.uf || ""} onChange={handleChange} />
+              </>
             ) : (
               <span>
-                {user.enderecoFaturamento.logradouro}, {user.enderecoFaturamento.numero}, {user.enderecoFaturamento.bairro}, {user.enderecoFaturamento.cidade}, {user.enderecoFaturamento.uf}
+                {user.enderecoFaturamento?.logradouro}, {user.enderecoFaturamento?.numero}, {user.enderecoFaturamento?.bairro}, {user.enderecoFaturamento?.cidade}, {user.enderecoFaturamento?.uf}
               </span>
             )}
           </div>
@@ -280,21 +247,21 @@ function EditUser() {
               <p>Nenhum endereço de entrega cadastrado.</p>
             )}
 
-            {!mostrarNovoEndereco && (
-              <button type="button" onClick={() => setMostrarNovoEndereco(true)}>
-                Adicionar Endereço de Entrega
-              </button>
-            )}
+            <button type="button" onClick={() => setMostrarNovoEndereco(true)}>
+              Adicionar Endereço de Entrega
+            </button>
+
 
             {mostrarNovoEndereco && (
               <div>
                 <h4>Novo Endereço de Entrega</h4>
-                <input type="text" name="cep" placeholder="CEP" value={novoEnderecoEntrega.cep} onChange={handleNovoEnderecoChange} onBlur={handleNovoEnderecoCepBlur} />
-                <input type="text" name="logradouro" placeholder="Logradouro" value={novoEnderecoEntrega.logradouro} onChange={handleNovoEnderecoChange} />
-                <input type="text" name="numero" placeholder="Número" value={novoEnderecoEntrega.numero} onChange={handleNovoEnderecoChange} />
-                <input type="text" name="bairro" placeholder="Bairro" value={novoEnderecoEntrega.bairro} onChange={handleNovoEnderecoChange} />
-                <input type="text" name="cidade" placeholder="Cidade" value={novoEnderecoEntrega.cidade} onChange={handleNovoEnderecoChange} />
-                <input type="text" name="uf" placeholder="UF" value={novoEnderecoEntrega.uf} onChange={handleNovoEnderecoChange} />
+                <input name="cep" placeholder="CEP" value={novoEnderecoEntrega.cep} onChange={handleNovoEnderecoChange} onBlur={handleNovoEnderecoCepBlur} />
+                <input name="logradouro" placeholder="Logradouro" value={novoEnderecoEntrega.logradouro} onChange={handleNovoEnderecoChange} />
+                <input name="numero" placeholder="Número" value={novoEnderecoEntrega.numero} onChange={handleNovoEnderecoChange} />
+                <input name="complemento" placeholder="Complemento" value={novoEnderecoEntrega.complemento} onChange={handleNovoEnderecoChange} />
+                <input name="bairro" placeholder="Bairro" value={novoEnderecoEntrega.bairro} onChange={handleNovoEnderecoChange} />
+                <input name="cidade" placeholder="Cidade" value={novoEnderecoEntrega.cidade} onChange={handleNovoEnderecoChange} />
+                <input name="uf" placeholder="UF" value={novoEnderecoEntrega.uf} onChange={handleNovoEnderecoChange} />
                 <button type="button" onClick={handleAdicionarEnderecoEntrega}>Salvar Endereço</button>
               </div>
             )}
@@ -313,11 +280,9 @@ function EditUser() {
             </>
           )}
 
-          {!isEditing ? (
-            <button type="button" onClick={handleEdit}>Editar</button>
-          ) : (
-            <button type="button" onClick={handleSave}>Salvar</button>
-          )}
+          <button type="button" onClick={isEditing ? handleSave : handleEdit}>
+            {isEditing ? "Salvar" : "Editar"}
+          </button>
         </form>
       </div>
     </div>
