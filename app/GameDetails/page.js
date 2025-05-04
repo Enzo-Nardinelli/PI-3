@@ -59,27 +59,27 @@ function GameDetails() {
   const gameImages = prepareGameImages();
 
   const handleClick = async () => {
-    const userStorage = JSON.parse(localStorage.getItem("user"));
+    const userLoggedIn = JSON.parse(localStorage.getItem("userLoggedIn"));
     const temporaryUser = JSON.parse(localStorage.getItem("temporaryUser"));
-    if (userStorage) { // Set the user from localStorage
-      let userCarrinho = [];
+    if (userLoggedIn) { // Set the user from localStorage
+      let carrinho = [];
 
       try {
-        userCarrinho = Array.isArray(userStorage.userCarrinho)
-          ? userStorage.userCarrinho
-          : JSON.parse(userStorage.userCarrinho || "[]");
+        carrinho = Array.isArray(userLoggedIn.carrinho)
+          ? userLoggedIn.carrinho
+          : JSON.parse(userLoggedIn.carrinho || "[]");
       } catch (err) {
         console.error("Failed to parse carrinho", err);
-        userCarrinho = [];
+        carrinho = [];
       }
 
-      userCarrinho.push(game.id);
-      userStorage.userCarrinho = userCarrinho; // salva como array direto
-      localStorage.setItem("user", JSON.stringify(userStorage));
-      console.log(userStorage);
-      console.log(temporaryUser);
+      carrinho.push(game.id);
+      userLoggedIn.carrinho = carrinho; // salva como array direto
+      localStorage.setItem("userLoggedIn", JSON.stringify(userLoggedIn));
+      console.log(userLoggedIn);
+      console.log(carrinho);
       try {
-        const response = await fetch(`http://localhost:8080/users/${JSON.stringify(userStorage.userEmail)}/carrinho/add`, {
+        const response = await fetch(`http://localhost:8080/users/${JSON.stringify(userLoggedIn.email)}/carrinho/add`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -89,6 +89,8 @@ function GameDetails() {
     
         if (response.ok) {
           console.log("Game added to cart in the backend.");
+
+          //ATUALIZAR LOCAL STORAGE DEPOIS DE ATUALIZAR O CARRINHO
           navigate("/carrinho2"); // Navigate to the cart page
         } else {
           console.error("Failed to add game to cart in the backend.");

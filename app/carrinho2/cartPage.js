@@ -10,12 +10,12 @@ const CartPage = () => {
   useEffect(() => {
     // Retrieve the user from localStorage and set it to state
     const temporaryUser = JSON.parse(localStorage.getItem("temporaryUser"));
-    const userStorage = JSON.parse(localStorage.getItem("user"));
+    const userLoggedIn = JSON.parse(localStorage.getItem("userLoggedIn"));
   
-    if (userStorage) {
+    if (userLoggedIn) {
       const getCarrinho = async () => {
         try {
-          const response = await fetch(`http://localhost:8080/users/${userStorage.userEmail}/carrinho/retorno`);
+          const response = await fetch(`http://localhost:8080/users/${userLoggedIn.email}/carrinho/retorno`);
           if (response.ok) {
             const carrinho = await response.json();
             setCart(Array.isArray(carrinho) ? carrinho : []);
@@ -31,15 +31,15 @@ const CartPage = () => {
   
       getCarrinho(); // ← chamada da função ao carregar
   
-      setUser(userStorage); // Set the user from localStorage
-    } else if (!temporaryUser && !userStorage) {
+      setUser(userLoggedIn); // Set the user from localStorage
+    } else if (!temporaryUser && !userLoggedIn) {
       const temporaryUser = {
         userCarrinho: []
       };
       localStorage.setItem("temporaryUser", JSON.stringify(temporaryUser));
       setUser(temporaryUser);
       setCart(temporaryUser.userCarrinho);
-    } else if (temporaryUser && !userStorage) {
+    } else if (temporaryUser && !userLoggedIn) {
       setUser(temporaryUser);
       setCart(temporaryUser.userCarrinho);
     }
@@ -72,7 +72,7 @@ const CartPage = () => {
 
   const handleAddToCart = async (gameId) => {
     if (!user) return;
-
+    
     try {
       const response = await fetch(`http://localhost:8080/users/${user.id}/carrinho/add`, {
         method: "PUT",
@@ -94,16 +94,16 @@ const CartPage = () => {
 
   const handleRemoveFromCart = async (gameId) => {
     const temporaryUser = JSON.parse(localStorage.getItem("temporaryUser"));
-    const userStorage = JSON.parse(localStorage.getItem("user"));
+    const userLoggedIn = JSON.parse(localStorage.getItem("userLoggedIn"));
 
-    if (!userStorage) {
+    if (!userLoggedIn) {
       const newCarrinho = temporaryUser.userCarrinho.filter((id) => id !== gameId);
       temporaryUser.userCarrinho = newCarrinho;
       localStorage.setItem("temporaryUser", JSON.stringify(temporaryUser));
       setCart(newCarrinho);
     } else {
       try {
-        const response = await fetch(`http://localhost:8080/users/${user.userEmail}/carrinho/remove`, {
+        const response = await fetch(`http://localhost:8080/users/${userLoggedIn.email}/carrinho/remove`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(gameId),
@@ -124,28 +124,34 @@ const CartPage = () => {
   };
 
   const handleFinalizePurchase = async () => {
-    if (!user) return;
 
-    try {
-      const response = await fetch(`http://localhost:8080/users/${user.userId}/carrinho/finalizar`, {
-        method: "PUT",
-      });
+    const temporaryUser = JSON.parse(localStorage.getItem("temporaryUser"));
+    const userLoggedIn = JSON.parse(localStorage.getItem("userLoggedIn"));
 
-      if (response.ok) {
-        const updatedUser = await response.json();
-        setCart([]);
-
-        const userStorage = JSON.parse(localStorage.getItem("user"));
-        const userJogos = JSON.parse(userStorage.userJogos || "[]");
-        userStorage.userCarrinho = JSON.stringify([]);
-        localStorage.setItem("user", JSON.stringify(userStorage));
-
-        console.log("Purchase finalized", updatedUser);
-      } else {
-        console.error("Failed to finalize purchase");
+    if(userLoggedIn){
+      try {
+        const response = await fetch(`http://localhost:8080/users/${userLoggedIn.email}/carrinho/finalizar`, {
+          method: "PUT",
+        });
+  
+        if (response.ok) {
+          const updatedUser = await response.json();
+          setCart([]);
+  
+          userLoggedIn.jogos = updatedUser.jogos;
+          userLoggedIn.carrinho = updatedUser.carrinho;
+          localStorage.setItem("userLoggedIn", JSON.stringify(userLoggedIn));
+  
+          console.log("Purchase finalized", updatedUser);
+        } else {
+          console.error("Failed to finalize purchase");
+        }
+      } catch (error) {
+        console.error("Error finalizing purchase:", error);
       }
-    } catch (error) {
-      console.error("Error finalizing purchase:", error);
+    } 
+    else {
+      navigate("/login");
     }
   };
 
