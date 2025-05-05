@@ -10,6 +10,7 @@ function EditUser() {
   const [novaSenha, setNovaSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
   const [mostrarNovoEndereco, setMostrarNovoEndereco] = useState(false);
+  const [pedidos, setPedidos] = useState('');
 
   const enderecoInicial = {
     cep: '',
@@ -28,7 +29,31 @@ function EditUser() {
       setUser(JSON.parse(storedUser));
     }
     setLoading(false);
+    loadPedidos();
   }, []);
+
+  const loadPedidos = async () => {
+    const storedUser = JSON.parse(localStorage.getItem("userLoggedIn"));
+    const id = storedUser.id;
+    try{
+      const response = await fetch(`http://localhost:8080/pedidos/usuario/${id}`, {
+        method: "GET",
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      
+      const data = await response.json();
+      setPedidos(data);
+      console.log(data);
+      if (response.ok){
+        console.log("Pedido carregado!")
+      }
+    } catch {
+      console.log("Pedido não foi carregado!")
+      return;
+    }
+  }
 
   const handleNovoEnderecoChange = (e) => {
     const { name, value } = e.target;
@@ -307,6 +332,28 @@ function EditUser() {
           </div>
         </form>
       </div>
+      <h2>Pedidos do Usuário</h2>
+      {pedidos.length === 0 ? (
+        <p>Nenhum pedido encontrado.</p>
+      ) : (
+        <ul>
+          {pedidos.map((pedido) => (
+            <li key={pedido.id}>
+              <p><strong>ID do Pedido:</strong> {pedido.id}</p>
+              <p><strong>Frete:</strong> R$ {pedido.frete}</p>
+              <p><strong>Endereço de Entrega:</strong> {pedido.enderecoEntrega}</p>
+              <p><strong>Forma de Pagamento:</strong> {pedido.formaPagamento}</p>
+              <p><strong>Itens:</strong></p>
+              <ul>
+                {pedido.itens && pedido.itens.map((game, index) => (
+                  <li key={index}>{game.title} - R$ {game.price}</li>
+                ))}
+              </ul>
+              <hr />
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

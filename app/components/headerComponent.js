@@ -17,6 +17,11 @@ const Header = () => {
     navigate("/login");
   };
 
+  const handleClickUser2 = () => {
+    console.log("Redirecionando para o user");
+    navigate("/edituser");
+  };
+
   return (
     <header className="header">
       {/* Logo à esquerda */}
@@ -42,9 +47,7 @@ const Header = () => {
         </li>
         {/* Link para a página de editar usuário */}
         <li className="nav-item">
-          <Link href="/edituser">
-            <img src="/imagens/edit.png" height="20" width="20" alt="Editar Usuário" />
-          </Link>
+          <img src="/imagens/edit.png" height="20" width="20" alt="Editar Usuário" onClick={handleClickUser2}/>
         </li>
       </div>
     </header>
