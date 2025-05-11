@@ -79,7 +79,7 @@ function GameDetails() {
       console.log(userStorage);
       console.log(temporaryUser);
       try {
-        const response = await fetch(`http://localhost:8080/users/${JSON.stringify(userStorage.userEmail)}/carrinho/add`, {
+        const response = await fetch(`http://localhost:8080/users/${userStorage.email}/carrinho/add`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -97,7 +97,7 @@ function GameDetails() {
         console.error("Error updating the cart:", error);
       }
 
-      navigate("/carrinho2");
+      //navigate("/carrinho2");
     } else if(!temporaryUser){
       const temporaryUser = {
         userCarrinho: []
