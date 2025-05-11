@@ -72,7 +72,10 @@ const CartPage = () => {
         body: JSON.stringify(newCart),
       })
         .then((res) => res.json())
-        .then((updatedUser) => setCart(updatedUser.carrinho || []))
+        .then((updatedUser) => {
+          console.log("Carrinho atualizado:", updatedUser);
+          setCart(updatedUser.carrinho || []);
+        })
         .catch((err) => console.error("Erro ao atualizar carrinho:", err));
     } else {
       temporaryUser.userCarrinho = newCart;
@@ -86,17 +89,43 @@ const CartPage = () => {
     updateCart(updatedCart);
   };
 
-  const handleRemoveQuantity = (gameId) => {
-    const index = cart.indexOf(gameId);
-    if (index !== -1) {
-      const updatedCart = [...cart];
-      updatedCart.splice(index, 1);
-      updateCart(updatedCart);
-    }
-  };
+  const handleRemoveQuantity = async (gameId) => {
+      const temporaryUser = JSON.parse(localStorage.getItem("temporaryUser"));
+      const userLoggedIn = JSON.parse(localStorage.getItem("userLoggedIn"));
+  
+      if (!userLoggedIn) {
+        const newCarrinho = temporaryUser.userCarrinho.filter((id) => id !== gameId);
+        temporaryUser.userCarrinho = newCarrinho;
+        localStorage.setItem("temporaryUser", JSON.stringify(temporaryUser));
+        setCart(newCarrinho);
+      } else {
+        try {
+          const response = await fetch(`http://localhost:8080/users/${userLoggedIn.email}/carrinho/remove`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(gameId),
+          });
+  
+          if (response.ok) {
+            const updatedUser = await response.json();
+            const updatedCart = updatedUser.carrinho;
+            console.log("Uptdated cart", updatedCart);
+            setCart(Array.isArray(updatedCart) ? updatedCart : []);
+          } else {
+            console.error("Failed to remove from cart");
+          }
+        } catch (error) {
+          console.error("Error removing game from cart:", error);
+        }
+      }
+    };
 
   const handleRemoveAll = (gameId) => {
-    const updatedCart = cart.filter((id) => id !== gameId);
+    console.log(`Tentando remover todos os itens com o ID: ${gameId}`);
+
+    const updatedCart = cart.filter((id) => id !== gameId); // Remove todos os jogos com o ID específico
+    console.log("Carrinho atualizado após remover todos os jogos com esse ID:", updatedCart);
+
     updateCart(updatedCart);
   };
 
