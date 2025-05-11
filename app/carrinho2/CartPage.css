@@ -121,6 +121,12 @@
   color: #000; /* Definir cor preta */
 }
 
+.shipping-fee {
+  font-size: 16px;
+  color: #000; /* Cor preta para o valor do frete fixo */
+  margin-bottom: 10px;
+}
+
 .checkout-button {
   background-color: #28a745;
   color: white;
