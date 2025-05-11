@@ -1,108 +1,154 @@
+/* Layout geral do carrinho */
 .cart-container {
   display: flex;
   justify-content: center;
-  margin-top: 2rem;
-  padding: 0 20px;
+  align-items: center;
+  padding: 20px;
 }
 
 .cart-content {
   width: 100%;
-  max-width: 800px;
-  background-color: #f8f8f8;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  font-family: Arial, sans-serif;
 }
 
-h1 {
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 1rem;
+.cart-content h1 {
+  font-size: 28px;
+  margin-bottom: 10px;
+  text-align: center;
+  color: #000; /* Definir cor preta */
 }
 
-h2 {
-  font-size: 1.2rem;
-  color: #666;
-  margin-bottom: 2rem;
+.cart-content h2 {
+  font-size: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #000; /* Definir cor preta */
 }
 
+.empty-cart-message {
+  text-align: center;
+  font-size: 18px;
+  color: #555;
+}
+
+/* Lista de jogos */
 .cart-list {
   list-style: none;
   padding: 0;
 }
 
 .cart-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  margin-bottom: 1rem;
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
 }
 
-.cart-item span {
-  font-size: 1.1rem;
-  color: #333;
+.game-info {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.game-info span {
+  display: block;
+  margin-bottom: 5px;
 }
 
 .quantity-controls {
   display: flex;
+  justify-content: flex-start;
   align-items: center;
   gap: 10px;
 }
 
 .quantity-controls button {
-  padding: 0.4rem 0.8rem;
-  font-size: 1.1rem;
-  background-color: #0070f3;
+  background-color: #007bff;
   color: white;
   border: none;
+  padding: 8px 15px;
+  font-size: 16px;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .quantity-controls button:hover {
-  background-color: #005bb5;
+  background-color: #0056b3;
 }
 
-.quantity-controls span {
-  font-size: 1.1rem;
-  color: #333;
+.subtotal {
+  font-size: 16px;
   font-weight: bold;
+  margin-top: 10px;
+  color: #333;
 }
 
-.empty-cart-message {
-  font-size: 1.1rem;
-  color: #999;
+.remove-all-button {
+  background-color: #e53935;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  margin-left: 20px;
+  transition: background-color 0.3s;
+}
+
+.remove-all-button:hover {
+  background-color: #d32f2f;
+}
+
+/* Estilo total do pedido */
+.total-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.total {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #000; /* Definir cor preta */
 }
 
 .checkout-button {
-  margin-top: 2rem;
-  padding: 0.8rem 1.6rem;
   background-color: #28a745;
   color: white;
+  padding: 15px 30px;
+  font-size: 18px;
+  font-weight: bold;
   border: none;
-  border-radius: 6px;
-  font-size: 1.2rem;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
   width: 100%;
+  transition: background-color 0.3s;
 }
 
 .checkout-button:hover {
   background-color: #218838;
 }
 
+/* Responsividade */
 @media (max-width: 768px) {
   .cart-content {
-    padding: 1.5rem;
+    padding: 10px;
+  }
+
+  .cart-list {
+    padding: 0 10px;
   }
 
   .checkout-button {
-    padding: 0.8rem;
+    font-size: 16px;
   }
 }
