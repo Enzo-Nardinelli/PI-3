@@ -146,6 +146,9 @@ const CartPage = () => {
         )}
         {games.length > 0 && (
           <div className="total-container">
+            <div className="shipping-fee">
+              Frete fixo: R$20,00
+            </div>
             <div className="total">
               Valor total do pedido: R${calculateTotal().toFixed(2)}
             </div>
