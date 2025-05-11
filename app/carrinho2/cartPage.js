@@ -138,7 +138,7 @@ const CartPage = () => {
                   <button onClick={() => handleRemoveAll(game.id)} className="remove-all-button">Remove All</button>
                 </div>
                 <div className="subtotal">
-                  Subtotal: R${calculateSubtotal(game.price, game.quantity).toFixed(2)}
+                  Subtotal do produto: R${calculateSubtotal(game.price, game.quantity).toFixed(2)}
                 </div>
               </li>
             ))}
@@ -147,7 +147,7 @@ const CartPage = () => {
         {games.length > 0 && (
           <div className="total-container">
             <div className="total">
-              Total: R${calculateTotal().toFixed(2)}
+              Valor total do pedido: R${calculateTotal().toFixed(2)}
             </div>
             <button className="checkout-button" onClick={() => navigate("/checkout")}>
               Proceed to Checkout
