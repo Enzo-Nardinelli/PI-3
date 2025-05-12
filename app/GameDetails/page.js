@@ -59,9 +59,11 @@ function GameDetails() {
   const gameImages = prepareGameImages();
 
   const handleClick = async () => {
-    const userStorage = JSON.parse(localStorage.getItem("user"));
+    // Acesse o usuário logado do localStorage
+    const userStorage = JSON.parse(localStorage.getItem("userLoggedIn")); // Troque "user" por "userLoggedIn"
     const temporaryUser = JSON.parse(localStorage.getItem("temporaryUser"));
-    if (userStorage) { // Set the user from localStorage
+
+    if (userStorage) { // Verifique se o usuário está logado
       let userCarrinho = [];
 
       try {
@@ -74,45 +76,45 @@ function GameDetails() {
       }
 
       userCarrinho.push(game.id);
-      userStorage.userCarrinho = userCarrinho; // salva como array direto
-      localStorage.setItem("user", JSON.stringify(userStorage));
+      userStorage.userCarrinho = userCarrinho; // Atualize o carrinho
+      localStorage.setItem("userLoggedIn", JSON.stringify(userStorage)); // Salve de volta no localStorage
       console.log(userStorage);
       console.log(temporaryUser);
+
       try {
         const response = await fetch(`http://localhost:8080/users/${userStorage.email}/carrinho/add`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(game.id), // Send the game ID to add it to the user's cart
+          body: JSON.stringify(game.id), // Envie o ID do jogo para adicionar ao carrinho
         });
-    
+
         if (response.ok) {
           console.log("Game added to cart in the backend.");
-          navigate("/carrinho2"); // Navigate to the cart page
+          navigate("/carrinho2"); // Redireciona para a página do carrinho
         } else {
           console.error("Failed to add game to cart in the backend.");
         }
       } catch (error) {
         console.error("Error updating the cart:", error);
       }
-
-      //navigate("/carrinho2");
-    } else if(!temporaryUser){
+    } else if (!temporaryUser) {
+      // Se o usuário não estiver logado, crie um usuário temporário
       const temporaryUser = {
-        userCarrinho: []
+        userCarrinho: [],
       };
       temporaryUser.userCarrinho.push(game.id);
       localStorage.setItem("temporaryUser", JSON.stringify(temporaryUser));
       navigate("/carrinho2");
     } else {
-      console.log("awdadwd")
+      // Se existir um usuário temporário, apenas adicione o jogo ao carrinho
       temporaryUser.userCarrinho.push(game.id);
       localStorage.setItem("temporaryUser", JSON.stringify(temporaryUser));
       navigate("/carrinho2");
     }
-
   };
+
 
   return (
     <div className="game-details">
