@@ -1,0 +1,160 @@
+/* Layout geral do carrinho */
+.cart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.cart-content {
+  width: 100%;
+  max-width: 900px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.cart-content h1 {
+  font-size: 28px;
+  margin-bottom: 10px;
+  text-align: center;
+  color: #000; /* Definir cor preta */
+}
+
+.cart-content h2 {
+  font-size: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #000; /* Definir cor preta */
+}
+
+.empty-cart-message {
+  text-align: center;
+  font-size: 18px;
+  color: #555;
+}
+
+/* Lista de jogos */
+.cart-list {
+  list-style: none;
+  padding: 0;
+}
+
+.cart-item {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-info {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.game-info span {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.quantity-controls {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
+
+.quantity-controls button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.quantity-controls button:hover {
+  background-color: #0056b3;
+}
+
+.subtotal {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+  color: #333;
+}
+
+.remove-all-button {
+  background-color: #e53935;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  margin-left: 20px;
+  transition: background-color 0.3s;
+}
+
+.remove-all-button:hover {
+  background-color: #d32f2f;
+}
+
+/* Estilo total do pedido */
+.total-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.total {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #000; /* Definir cor preta */
+}
+
+.shipping-fee {
+  font-size: 16px;
+  color: #000; /* Cor preta para o valor do frete fixo */
+  margin-bottom: 10px;
+}
+
+.checkout-button {
+  background-color: #28a745;
+  color: white;
+  padding: 15px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.checkout-button:hover {
+  background-color: #218838;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .cart-content {
+    padding: 10px;
+  }
+
+  .cart-list {
+    padding: 0 10px;
+  }
+
+  .checkout-button {
+    font-size: 16px;
+  }
+}
