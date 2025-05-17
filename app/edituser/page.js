@@ -35,6 +35,7 @@ function EditUser() {
   const loadPedidos = async () => {
     const storedUser = JSON.parse(localStorage.getItem("userLoggedIn"));
     const id = storedUser.id;
+    alert(storedUser.id);
     try{
       const response = await fetch(`http://localhost:8080/pedidos/usuario/${id}`, {
         method: "GET",

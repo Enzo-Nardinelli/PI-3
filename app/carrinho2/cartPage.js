@@ -47,7 +47,7 @@ const CartPage = () => {
             return data ? { ...data, quantity: gameCounts[id] } : null;
           })
         );
-
+        console.log(fetchedGames);
         setGames(fetchedGames.filter(Boolean));
       } catch (error) {
         console.error("Erro ao buscar jogos:", error);
@@ -84,10 +84,37 @@ const CartPage = () => {
     }
   };
 
-  const handleAddQuantity = (gameId) => {
-    const updatedCart = [...cart, gameId];
-    updateCart(updatedCart);
+  const handleAddQuantity = async (gameId) => {
+    const userLoggedIn = JSON.parse(localStorage.getItem("userLoggedIn"));
+  
+    if (userLoggedIn) {
+      try {
+        const response = await fetch(`http://localhost:8080/users/${userLoggedIn.email}/carrinho/add`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(gameId),
+        });
+  
+        if (response.ok) {
+          const updatedUser = await response.json();
+          const updatedCart = updatedUser.carrinho;
+          setCart(Array.isArray(updatedCart) ? updatedCart : []);
+        } else {
+          console.error("Erro ao adicionar item ao carrinho.");
+        }
+      } catch (err) {
+        console.error("Erro ao adicionar quantidade:", err);
+      }
+    } else {
+      // Usuário temporário
+      const temporaryUser = JSON.parse(localStorage.getItem("temporaryUser")) || { userCarrinho: [] };
+      const newCart = [...cart, gameId];
+      temporaryUser.userCarrinho = newCart;
+      localStorage.setItem("temporaryUser", JSON.stringify(temporaryUser));
+      setCart(newCart);
+    }
   };
+  
 
   const handleRemoveQuantity = async (gameId) => {
       const temporaryUser = JSON.parse(localStorage.getItem("temporaryUser"));
