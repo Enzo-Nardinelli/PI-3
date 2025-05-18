@@ -332,28 +332,6 @@ function EditUser() {
           </div>
         </form>
       </div>
-      <h2>Pedidos do Usuário</h2>
-      {pedidos.length === 0 ? (
-        <p>Nenhum pedido encontrado.</p>
-      ) : (
-        <ul>
-          {pedidos.map((pedido) => (
-            <li key={pedido.id}>
-              <p><strong>ID do Pedido:</strong> {pedido.id}</p>
-              <p><strong>Frete:</strong> R$ {pedido.frete}</p>
-              <p><strong>Endereço de Entrega:</strong> {pedido.enderecoEntrega}</p>
-              <p><strong>Forma de Pagamento:</strong> {pedido.formaPagamento}</p>
-              <p><strong>Itens:</strong></p>
-              <ul>
-                {pedido.itens && pedido.itens.map((game, index) => (
-                  <li key={index}>{game.title} - R$ {game.price}</li>
-                ))}
-              </ul>
-              <hr />
-            </li>
-          ))}
-        </ul>
-      )}
     </div>
   );
 }
