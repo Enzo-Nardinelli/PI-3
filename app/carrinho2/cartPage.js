@@ -90,35 +90,35 @@ const CartPage = () => {
   };
 
   const handleRemoveQuantity = async (gameId) => {
-      const temporaryUser = JSON.parse(localStorage.getItem("temporaryUser"));
-      const userLoggedIn = JSON.parse(localStorage.getItem("userLoggedIn"));
-  
-      if (!userLoggedIn) {
-        const newCarrinho = temporaryUser.userCarrinho.filter((id) => id !== gameId);
-        temporaryUser.userCarrinho = newCarrinho;
-        localStorage.setItem("temporaryUser", JSON.stringify(temporaryUser));
-        setCart(newCarrinho);
-      } else {
-        try {
-          const response = await fetch(`http://localhost:8080/users/${userLoggedIn.email}/carrinho/remove`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(gameId),
-          });
-  
-          if (response.ok) {
-            const updatedUser = await response.json();
-            const updatedCart = updatedUser.carrinho;
-            console.log("Uptdated cart", updatedCart);
-            setCart(Array.isArray(updatedCart) ? updatedCart : []);
-          } else {
-            console.error("Failed to remove from cart");
-          }
-        } catch (error) {
-          console.error("Error removing game from cart:", error);
+    const temporaryUser = JSON.parse(localStorage.getItem("temporaryUser"));
+    const userLoggedIn = JSON.parse(localStorage.getItem("userLoggedIn"));
+
+    if (!userLoggedIn) {
+      const newCarrinho = temporaryUser.userCarrinho.filter((id) => id !== gameId);
+      temporaryUser.userCarrinho = newCarrinho;
+      localStorage.setItem("temporaryUser", JSON.stringify(temporaryUser));
+      setCart(newCarrinho);
+    } else {
+      try {
+        const response = await fetch(`http://localhost:8080/users/${userLoggedIn.email}/carrinho/remove`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(gameId),
+        });
+
+        if (response.ok) {
+          const updatedUser = await response.json();
+          const updatedCart = updatedUser.carrinho;
+          console.log("Updated cart", updatedCart);
+          setCart(Array.isArray(updatedCart) ? updatedCart : []);
+        } else {
+          console.error("Failed to remove from cart");
         }
+      } catch (error) {
+        console.error("Error removing game from cart:", error);
       }
-    };
+    }
+  };
 
   const handleRemoveAll = (gameId) => {
     console.log(`Tentando remover todos os itens com o ID: ${gameId}`);
@@ -138,6 +138,10 @@ const CartPage = () => {
     const shippingFee = 20; // Frete fixo de R$20
     return subtotal + shippingFee;
   };
+
+  useEffect(() => {
+    console.log("LocalStorage cart:", localStorage.getItem("cart"));
+  }, [cart]);
 
   if (!user) return (
     <div className="cart-container">
