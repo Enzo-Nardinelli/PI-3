@@ -9,14 +9,10 @@ const ResumoPedido = () => {
 
   const user = JSON.parse(localStorage.getItem("userLoggedIn"));
   const formaPagamento = localStorage.getItem("formaPagamento");
-  const codigoPix = localStorage.getItem("codigoPix");
   const cartao = JSON.parse(localStorage.getItem("dadosCartao"));
   const enderecoSelecionado = localStorage.getItem("enderecoSelecionado");
 
-  // Pegamos cart uma vez só aqui
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-  console.log("Cart do localStorage:", cart);
 
   useEffect(() => {
     async function completarDadosCarrinho() {
@@ -25,7 +21,6 @@ const ResumoPedido = () => {
       if (temDadosCompletos) {
         setJogosCompletos(cart);
         setLoading(false);
-        console.log("Carrinho já completo:", cart);
         return;
       }
 
@@ -39,7 +34,6 @@ const ResumoPedido = () => {
         );
         setJogosCompletos(jogosComDados);
         setLoading(false);
-        console.log("Carrinho completado com fetch:", jogosComDados);
       } catch (error) {
         console.error("Erro ao buscar dados dos jogos:", error);
         setJogosCompletos(cart);
@@ -48,18 +42,15 @@ const ResumoPedido = () => {
     }
 
     completarDadosCarrinho();
-  // <-- Aqui o array de dependências está vazio para executar só uma vez no mount
   }, []);
 
-  const copiarCodigoPix = () => {
-    navigator.clipboard.writeText(codigoPix).then(() => {
-      alert("Código Pix copiado!");
-    });
-  };
+  const frete = 20;
+  const subtotal = jogosCompletos.reduce((acc, jogo) => acc + (jogo.price * jogo.quantity), 0);
+  const total = subtotal + frete;
 
   const finalizarPedido = async () => {
     const pedido = {
-      frete: 0,
+      frete,
       enderecoEntrega: enderecoSelecionado,
       formaPagamento,
       itens: jogosCompletos,
@@ -91,23 +82,19 @@ const ResumoPedido = () => {
         <ul>
           {jogosCompletos.map((jogo) => (
             <li key={jogo.gameId || jogo.id}>
-              {jogo.title || "Título indisponível"} - R${jogo.price ? jogo.price.toFixed(2) : "0.00"} x {jogo.quantity} = R${jogo.price && jogo.quantity ? (jogo.price * jogo.quantity).toFixed(2) : "0.00"}
+              {jogo.title || "Título indisponível"} - R${jogo.price?.toFixed(2)} x {jogo.quantity} = R${(jogo.price * jogo.quantity).toFixed(2)}
             </li>
           ))}
         </ul>
 
-        <h3>Forma de Pagamento: {formaPagamento?.toUpperCase()}</h3>
+        <h3>Resumo de Valores:</h3>
+        <ul>
+          <li>Subtotal: R${subtotal.toFixed(2)}</li>
+          <li>Frete: R${frete.toFixed(2)}</li>
+          <li><strong>Total: R${total.toFixed(2)}</strong></li>
+        </ul>
 
-        {formaPagamento === 'pix' && (
-          <div className="pix-info">
-            <p><strong>Código Pix:</strong> {codigoPix}</p>
-            <button onClick={copiarCodigoPix}>Copiar código Pix</button>
-            <img
-              src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${codigoPix}`}
-              alt="QR Code Pix"
-            />
-          </div>
-        )}
+        <h3>Forma de Pagamento: {formaPagamento?.toUpperCase()}</h3>
 
         {formaPagamento === 'cartao' && cartao && (
           <div className="new-address-form">
