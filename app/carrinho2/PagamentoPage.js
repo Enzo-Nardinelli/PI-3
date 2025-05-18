@@ -60,6 +60,15 @@ const PagamentoPage = () => {
           <label>
             <input
               type="radio"
+              value="pix"
+              checked={formaPagamento === 'pix'}
+              onChange={(e) => setFormaPagamento(e.target.value)}
+            />
+            Pix
+          </label>
+          <label>
+            <input
+              type="radio"
               value="boleto"
               checked={formaPagamento === 'boleto'}
               onChange={(e) => setFormaPagamento(e.target.value)}
