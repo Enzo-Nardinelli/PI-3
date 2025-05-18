@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Checkout.css';
 
 const PagamentoPage = () => {
   const [formaPagamento, setFormaPagamento] = useState('');
+  const [codigoPix, setCodigoPix] = useState('');
   const [cartao, setCartao] = useState({
     numero: '',
     codigo: '',
@@ -26,6 +27,22 @@ const PagamentoPage = () => {
     return Object.values(cartao).every(value => value.trim());
   };
 
+  const gerarCodigoPix = () => {
+    const random = Math.random().toString(36).substring(2, 12).toUpperCase();
+    setCodigoPix(`PIX-${random}`);
+  };
+
+  const handlePixSelecionado = () => {
+    setFormaPagamento('pix');
+    gerarCodigoPix();
+  };
+
+  const copiarCodigoPix = () => {
+    navigator.clipboard.writeText(codigoPix).then(() => {
+      alert('Código Pix copiado!');
+    });
+  };
+
   const handleFinalize = async () => {
     const pedido = {
       frete: 0,
@@ -46,7 +63,7 @@ const PagamentoPage = () => {
       });
 
       alert(response.ok ? "Pedido cadastrado!" : "Erro ao cadastrar pedido.");
-      if (response.ok) navigate("/"); // Redirecionar após sucesso
+      if (response.ok) navigate("/");
     } catch {
       alert("Erro ao cadastrar pedido.");
     }
@@ -56,13 +73,13 @@ const PagamentoPage = () => {
     <div className="checkout-container">
       <div className="checkout-content">
         <h2>Forma de Pagamento</h2>
-        <div className="payment-options">
+        <div className="payment-options-vertical">
           <label>
             <input
               type="radio"
               value="pix"
               checked={formaPagamento === 'pix'}
-              onChange={(e) => setFormaPagamento(e.target.value)}
+              onChange={handlePixSelecionado}
             />
             Pix
           </label>
@@ -85,6 +102,17 @@ const PagamentoPage = () => {
             Cartão de Crédito
           </label>
         </div>
+
+        {formaPagamento === 'pix' && (
+          <div className="pix-info">
+            <p><strong>Código Pix:</strong> {codigoPix}</p>
+            <button onClick={copiarCodigoPix}>Copiar código Pix</button>
+            <img
+              src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${codigoPix}`}
+              alt="QR Code Pix"
+            />
+          </div>
+        )}
 
         {formaPagamento === 'cartao' && (
           <div className="card-fields">
