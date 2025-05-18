@@ -5,7 +5,7 @@ import './Checkout.css';
 const ResumoPedido = () => {
   const navigate = useNavigate();
   const [jogosCompletos, setJogosCompletos] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); 
 
   const user = JSON.parse(localStorage.getItem("userLoggedIn"));
   const formaPagamento = localStorage.getItem("formaPagamento");
@@ -52,16 +52,11 @@ const ResumoPedido = () => {
       frete,
       enderecoEntrega:JSON.stringify(enderecoSelecionado),
       formaPagamento,
-      itens: JSON.stringify(jogosCompletos),
-      userId: user.id
+      itens: jogosCompletos,
+      userId: user.id,
+      total: total,
+      data: new Date().toISOString()
     };
-    // const pedido = {
-    //   frete :"",
-    //   enderecoEntrega :"",
-    //   formaPagamento :"",
-    //   itens:"",
-    //   userId:""
-    // };
     console.log(pedido);
     try {
       const response = await fetch(`http://localhost:8080/pedidos`, {
@@ -71,7 +66,7 @@ const ResumoPedido = () => {
       });
 
       alert(response.ok ? "Pedido cadastrado!" : "Erro ao cadastrar pedido.");
-      clearCart();
+      if (response.ok) clearCart();
       if (response.ok) navigate("/");
     } catch {
       alert("Erro ao cadastrar pedido.");
