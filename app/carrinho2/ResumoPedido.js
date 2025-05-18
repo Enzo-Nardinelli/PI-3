@@ -47,16 +47,22 @@ const ResumoPedido = () => {
   const frete = 20;
   const subtotal = jogosCompletos.reduce((acc, jogo) => acc + (jogo.price * jogo.quantity), 0);
   const total = subtotal + frete;
-
   const finalizarPedido = async () => {
     const pedido = {
       frete,
-      enderecoEntrega: enderecoSelecionado,
+      enderecoEntrega:JSON.stringify(enderecoSelecionado),
       formaPagamento,
-      itens: jogosCompletos,
+      itens: JSON.stringify(jogosCompletos),
       userId: user.id
     };
-
+    // const pedido = {
+    //   frete :"",
+    //   enderecoEntrega :"",
+    //   formaPagamento :"",
+    //   itens:"",
+    //   userId:""
+    // };
+    console.log(pedido);
     try {
       const response = await fetch(`http://localhost:8080/pedidos`, {
         method: "POST",
@@ -65,9 +71,33 @@ const ResumoPedido = () => {
       });
 
       alert(response.ok ? "Pedido cadastrado!" : "Erro ao cadastrar pedido.");
+      clearCart();
       if (response.ok) navigate("/");
     } catch {
       alert("Erro ao cadastrar pedido.");
+    }
+  };
+
+  const clearCart = () => {
+    const userLoggedIn = JSON.parse(localStorage.getItem("userLoggedIn"));
+    const temporaryUser = JSON.parse(localStorage.getItem("temporaryUser"));
+  
+    if (userLoggedIn) {
+      fetch(`http://localhost:8080/users/${userLoggedIn.email}/carrinho`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify([]), // zera o carrinho
+      })
+        .then((res) => res.json())
+        .then((updatedUser) => {
+          console.log("Carrinho limpo:", updatedUser);
+          setCart([]);
+        })
+        .catch((err) => console.error("Erro ao limpar carrinho:", err));
+    } else {
+      temporaryUser.userCarrinho = [];
+      localStorage.setItem("temporaryUser", JSON.stringify(temporaryUser));
+      setCart([]);
     }
   };
 
