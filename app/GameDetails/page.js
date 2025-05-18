@@ -75,7 +75,7 @@ function GameDetails() {
         userCarrinho = [];
       }
 
-      userCarrinho.push(game.id);
+      userCarrinho.push(game);
       userStorage.userCarrinho = userCarrinho; // Atualize o carrinho
       localStorage.setItem("userLoggedIn", JSON.stringify(userStorage)); // Salve de volta no localStorage
       console.log(userStorage);

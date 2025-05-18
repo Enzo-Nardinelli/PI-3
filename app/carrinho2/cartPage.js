@@ -17,8 +17,8 @@ const CartPage = () => {
       const getCarrinho = async () => {
         try {
           const response = await fetch(`http://localhost:8080/users/${userLoggedIn.email}/carrinho/retorno`);
-          const carrinho = response.ok ? await response.json() : [];
-          setCart(Array.isArray(carrinho) ? carrinho : []);
+          const userCarrinho = response.ok ? await response.json() : [];
+          setCart(Array.isArray(userCarrinho) ? userCarrinho : []);
         } catch (err) {
           console.error("Erro ao buscar carrinho:", err);
         }
@@ -48,6 +48,7 @@ const CartPage = () => {
           })
         );
 
+        console.log(fetchedGames)
         setGames(fetchedGames.filter(Boolean));
       } catch (error) {
         console.error("Erro ao buscar jogos:", error);
@@ -74,7 +75,7 @@ const CartPage = () => {
         .then((res) => res.json())
         .then((updatedUser) => {
           console.log("Carrinho atualizado:", updatedUser);
-          setCart(updatedUser.carrinho || []);
+          setCart(updatedUser.userCarrinho || []);
         })
         .catch((err) => console.error("Erro ao atualizar carrinho:", err));
     } else {
@@ -108,7 +109,7 @@ const CartPage = () => {
 
         if (response.ok) {
           const updatedUser = await response.json();
-          const updatedCart = updatedUser.carrinho;
+          const updatedCart = updatedUser.userCarrinho;
           console.log("Updated cart", updatedCart);
           setCart(Array.isArray(updatedCart) ? updatedCart : []);
         } else {
