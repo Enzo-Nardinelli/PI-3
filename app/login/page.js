@@ -21,6 +21,7 @@ function Login() {
       }
 
       const data = await response.json();
+      console.log(data);
 
       if (data.user) {
         const userWithPassword = { ...data.user, password }; // Adiciona a senha manualmente
