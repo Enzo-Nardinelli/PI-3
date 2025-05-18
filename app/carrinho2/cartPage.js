@@ -181,7 +181,7 @@ const CartPage = () => {
             <div className="total">
               Valor total do pedido: R${calculateTotal().toFixed(2)}
             </div>
-            <button className="checkout-button" onClick={() => navigate("/checkout")}>
+            <button className="checkout-button" onClick={() => navigate("/endereco")}>
               Proceed to Checkout
             </button>
           </div>
