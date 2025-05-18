@@ -43,31 +43,19 @@ const PagamentoPage = () => {
     });
   };
 
-  const handleFinalize = async () => {
-    const pedido = {
-      frete: 0,
-      enderecoEntrega: enderecoSelecionado,
-      formaPagamento,
-      itens: cart.map(game => ({
-        gameId: game.gameId,
-        quantity: game.quantity
-      })),
-      userId: user.id
-    };
-
-    try {
-      const response = await fetch(`http://localhost:8080/pedidos`, {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(pedido)
-      });
-
-      alert(response.ok ? "Pedido cadastrado!" : "Erro ao cadastrar pedido.");
-      if (response.ok) navigate("/");
-    } catch {
-      alert("Erro ao cadastrar pedido.");
+  const handleResumo = () => {
+    localStorage.setItem("formaPagamento", formaPagamento);
+    if (formaPagamento === "pix") {
+      localStorage.setItem("codigoPix", codigoPix);
     }
+    if (formaPagamento === "cartao") {
+      localStorage.setItem("dadosCartao", JSON.stringify(cartao));
+    }
+    localStorage.setItem("cart", JSON.stringify(cart)); // Salva o carrinho
+
+    navigate("/resumo");
   };
+
 
   return (
     <div className="checkout-container">
@@ -126,10 +114,10 @@ const PagamentoPage = () => {
 
         <button
           className="action-button"
-          onClick={handleFinalize}
+          onClick={handleResumo}
           disabled={!formaPagamento || (formaPagamento === 'cartao' && !isCartaoValido())}
         >
-          Finalizar Pedido
+          Resumo do Pedido
         </button>
       </div>
     </div>
