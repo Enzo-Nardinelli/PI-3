@@ -15,9 +15,9 @@ const PagamentoPage = () => {
 
   const user = JSON.parse(localStorage.getItem("userLoggedIn"));
   const enderecoSelecionado = localStorage.getItem("enderecoSelecionado");
-  const navigate = useNavigate();
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-  const cart = []; // Idealmente recuperar do localStorage ou contexto
+  const navigate = useNavigate();
 
   const handleCartaoChange = (e) => {
     setCartao({ ...cartao, [e.target.name]: e.target.value });
@@ -45,17 +45,15 @@ const PagamentoPage = () => {
 
   const handleResumo = () => {
     localStorage.setItem("formaPagamento", formaPagamento);
+    localStorage.setItem("cart", JSON.stringify(cart)); // Salva o carrinho novamente por segurança
     if (formaPagamento === "pix") {
       localStorage.setItem("codigoPix", codigoPix);
     }
     if (formaPagamento === "cartao") {
       localStorage.setItem("dadosCartao", JSON.stringify(cartao));
     }
-    localStorage.setItem("cart", JSON.stringify(cart)); // Salva o carrinho
-
     navigate("/resumo");
   };
-
 
   return (
     <div className="checkout-container">
