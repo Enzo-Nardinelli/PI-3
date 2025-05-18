@@ -16,6 +16,7 @@ import edituser from "./edituser/page";
 import EnderecoPage from "./carrinho2/EnderecoPage";
 import PagamentoPage from "./carrinho2/PagamentoPage";
 import ResumoPedido from "./carrinho2/ResumoPedido";
+import EditPedido from "./editPedido/page";
 
 export default function Inicio() {
   return (
@@ -32,7 +33,7 @@ export default function Inicio() {
           <Route path="/endereco" element={<EnderecoPage />} />
           <Route path="/pagamento" element={<PagamentoPage />} />
           <Route path="/resumo" element={<ResumoPedido />} />
-
+          <Route path="/editPedido" element={<EditPedido/>} />
         </Routes>
       </Router>
     )
