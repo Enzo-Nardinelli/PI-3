@@ -138,3 +138,90 @@
     padding: 10px 12px;
   }
 }
+
+/* Estilização das opções de pagamento */
+.payment-options-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.payment-options-vertical label {
+  font-size: 18px;
+  font-weight: 600;
+  color: #000; /* Título preto */
+}
+
+/* Estilo para seção Pix */
+.pix-info {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.pix-info p {
+  font-size: 18px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: #333;
+}
+
+.pix-info button {
+  padding: 10px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 15px;
+  transition: background-color 0.3s ease;
+}
+
+.pix-info button:hover {
+  background-color: #0056b3;
+}
+
+.pix-info img {
+  display: block;
+  margin: 0 auto;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  padding: 8px;
+  background-color: white;
+}
+
+/* Estilo para o formulário de cartão de crédito */
+.card-fields {
+  margin-top: 30px;
+  padding: 25px 30px;
+  background-color: #f0f8ff;
+  border: 1.5px solid #a9d1ff;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(0, 123, 255, 0.15);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px 25px;
+}
+
+.card-fields input {
+  width: 100%;
+  padding: 12px 15px;
+  font-size: 15px;
+  border: 1.5px solid #ccc;
+  border-radius: 10px;
+  transition: border-color 0.3s ease;
+}
+
+.card-fields input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Torna o formulário de cartão responsivo */
+@media (max-width: 768px) {
+  .card-fields {
+    grid-template-columns: 1fr;
+  }
+}
