@@ -93,7 +93,7 @@ function EditUser() {
       genero: user.genero,
       dataNascimento: user.dataNascimento,
       password: novaSenha || user.password, // Se novaSenha não for fornecida, mantém a senha atual
-      enderecoFaturamento: { ...user.enderecoFaturamento },
+      enderecoFaturamento: user.enderecoFaturamento,
       enderecosEntrega: user.enderecosEntrega || []
     };
 
@@ -131,15 +131,7 @@ function EditUser() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (["cep", "logradouro", "numero", "bairro", "cidade", "uf"].includes(name)) {
-      setUser((prev) => ({
-        ...prev,
-        enderecoFaturamento: {
-          ...prev.enderecoFaturamento,
-          [name]: value
-        }
-      }));
-    } else if (name === "nome") {
+    if (name === "nome") {
       setUser((prev) => ({ ...prev, username: value }));
     } else {
       setUser((prev) => ({ ...prev, [name]: value }));
@@ -259,20 +251,9 @@ function EditUser() {
 
           <div>
             <label>Endereço de Faturamento: </label>
-            {isEditing ? (
-              <>
-                <input name="cep" placeholder="CEP" value={user.enderecoFaturamento?.cep || ""} onChange={handleChange} onBlur={handleCepBlur} />
-                <input name="logradouro" placeholder="Logradouro" value={user.enderecoFaturamento?.logradouro || ""} onChange={handleChange} />
-                <input name="numero" placeholder="Número" value={user.enderecoFaturamento?.numero || ""} onChange={handleChange} />
-                <input name="bairro" placeholder="Bairro" value={user.enderecoFaturamento?.bairro || ""} onChange={handleChange} />
-                <input name="cidade" placeholder="Cidade" value={user.enderecoFaturamento?.cidade || ""} onChange={handleChange} />
-                <input name="uf" placeholder="UF" value={user.enderecoFaturamento?.uf || ""} onChange={handleChange} />
-              </>
-            ) : (
-              <span>
-                {user.enderecoFaturamento?.logradouro}, {user.enderecoFaturamento?.numero}, {user.enderecoFaturamento?.bairro}, {user.enderecoFaturamento?.cidade}, {user.enderecoFaturamento?.uf}
-              </span>
-            )}
+            <span>
+                          {user.enderecoFaturamento?.logradouro}, {user.enderecoFaturamento?.numero}, {user.enderecoFaturamento?.bairro}, {user.enderecoFaturamento?.cidade}, {user.enderecoFaturamento?.uf}
+                        </span>
           </div>
 
           <div>
