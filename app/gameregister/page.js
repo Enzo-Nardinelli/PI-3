@@ -8,7 +8,7 @@ function GameRegister() {
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [imageUrls, setImageUrls] = useState(['']);
-  const [mainImageIndex, setMainImageIndex] = useState(0); // Índice da imagem principal
+  const [mainImageIndex, setMainImageIndex] = useState(0);
 
   // Adicionar um novo campo de URL de imagem
   const addImageField = () => {
@@ -41,6 +41,50 @@ function GameRegister() {
   // Definir imagem principal
   const setAsMainImage = (index) => {
     setMainImageIndex(index);
+  };
+
+  // NOVA FUNÇÃO: Renderizar preview da imagem
+  const renderImagePreview = (url, index) => {
+    if (!url || url.trim() === '') return null;
+    
+    return (
+      <div style={{ marginTop: '15px', marginBottom: '10px' }}>
+        <img 
+          src={url}
+          alt={`Preview ${index + 1}`}
+          style={{
+            maxWidth: '200px',
+            maxHeight: '150px',
+            objectFit: 'cover',
+            border: '2px solid #ddd',
+            borderRadius: '8px',
+            display: 'block',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+          }}
+          onError={(e) => {
+            e.target.style.display = 'none';
+            const errorDiv = document.createElement('div');
+            errorDiv.innerHTML = '<div style="padding: 15px; background: #ffebee; border: 2px dashed #f44336; border-radius: 8px; text-align: center; color: #d32f2f; font-size: 14px;">❌ Erro ao carregar imagem<br><small>Verifique se a URL está correta</small></div>';
+            e.target.parentNode.appendChild(errorDiv);
+          }}
+        />
+        {index === mainImageIndex && (
+          <div style={{
+            background: '#ffc107',
+            color: '#333',
+            padding: '6px 12px',
+            borderRadius: '6px',
+            fontSize: '12px',
+            fontWeight: 'bold',
+            marginTop: '8px',
+            display: 'inline-block',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+          }}>
+            ⭐ Imagem Principal
+          </div>
+        )}
+      </div>
+    );
   };
 
   const handleSubmit = async (e) => {
@@ -78,6 +122,7 @@ function GameRegister() {
       if (response.ok) {
         const data = await response.json();
         console.log("Game registered:", data);
+        alert('🎮 Jogo cadastrado com sucesso!');
         // Limpar campos do formulário
         setTitle('');
         setGenre('');
@@ -87,9 +132,11 @@ function GameRegister() {
         setMainImageIndex(0);
       } else {
         console.error("Failed to register game");
+        alert('❌ Erro ao cadastrar jogo!');
       }
     } catch (error) {
       console.error("Error:", error);
+      alert('❌ Erro ao conectar com o servidor!');
     }
   };
 
@@ -165,6 +212,9 @@ function GameRegister() {
                 )}
               </div>
             </div>
+            
+            {/* AQUI ESTÁ O PREVIEW DA IMAGEM */}
+            {renderImagePreview(url, index)}
           </div>
         ))}
         
