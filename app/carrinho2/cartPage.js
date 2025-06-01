@@ -192,6 +192,13 @@ const CartPage = () => {
             <button
               className="checkout-button"
               onClick={() => {
+                const userLoggedIn = JSON.parse(localStorage.getItem("userLoggedIn"));
+                if (!userLoggedIn) {
+                  alert("Você precisa estar logado para finalizar a compra.");
+                  navigate("/login"); // Redireciona para a página de login
+                  return;
+                }
+
                 localStorage.setItem("cart", JSON.stringify(games));
                 localStorage.setItem("shippingFee", shippingFee);
                 console.log("Todos os dados dos jogos salvos no localStorage:", games);
@@ -201,6 +208,7 @@ const CartPage = () => {
             >
               Proceed to Checkout
             </button>
+
           </div>
         )}
       </div>
