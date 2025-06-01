@@ -6,6 +6,7 @@ const CartPage = () => {
   const [user, setUser] = useState(null);
   const [games, setGames] = useState([]);
   const [cart, setCart] = useState([]);
+  const [shippingFee, setShippingFee] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,7 +49,6 @@ const CartPage = () => {
           })
         );
 
-        console.log(fetchedGames)
         setGames(fetchedGames.filter(Boolean));
       } catch (error) {
         console.error("Erro ao buscar jogos:", error);
@@ -74,7 +74,6 @@ const CartPage = () => {
       })
         .then((res) => res.json())
         .then((updatedUser) => {
-          console.log("Carrinho atualizado:", updatedUser);
           setCart(updatedUser.userCarrinho || []);
         })
         .catch((err) => console.error("Erro ao atualizar carrinho:", err));
@@ -110,7 +109,6 @@ const CartPage = () => {
         if (response.ok) {
           const updatedUser = await response.json();
           const updatedCart = updatedUser.userCarrinho;
-          console.log("Updated cart", updatedCart);
           setCart(Array.isArray(updatedCart) ? updatedCart : []);
         } else {
           console.error("Failed to remove from cart");
@@ -122,11 +120,7 @@ const CartPage = () => {
   };
 
   const handleRemoveAll = (gameId) => {
-    console.log(`Tentando remover todos os itens com o ID: ${gameId}`);
-
-    const updatedCart = cart.filter((id) => id !== gameId); // Remove todos os jogos com o ID específico
-    console.log("Carrinho atualizado após remover todos os jogos com esse ID:", updatedCart);
-
+    const updatedCart = cart.filter((id) => id !== gameId);
     updateCart(updatedCart);
   };
 
@@ -136,13 +130,8 @@ const CartPage = () => {
 
   const calculateTotal = () => {
     const subtotal = games.reduce((acc, game) => acc + calculateSubtotal(game.price, game.quantity), 0);
-    const shippingFee = 20; // Frete fixo de R$20
     return subtotal + shippingFee;
   };
-
-  useEffect(() => {
-    console.log("LocalStorage cart:", localStorage.getItem("cart"));
-  }, [cart]);
 
   if (!user) return (
     <div className="cart-container">
@@ -180,8 +169,22 @@ const CartPage = () => {
         )}
         {games.length > 0 && (
           <div className="total-container">
+            <div className="shipping-select">
+              <label htmlFor="shipping">Escolha o frete: </label>
+              <select
+                id="shipping"
+                onChange={(e) => setShippingFee(Number(e.target.value))}
+                defaultValue={0}
+              >
+                <option value={0} disabled>Selecione uma opção</option>
+                <option value={10}>Correios - R$10,00</option>
+                <option value={15}>Sedex - R$15,00</option>
+                <option value={20}>Fedex - R$20,00</option>
+              </select>
+            </div>
+
             <div className="shipping-fee">
-              Frete fixo: R$20,00
+              Frete selecionado: R${shippingFee.toFixed(2)}
             </div>
             <div className="total">
               Valor total do pedido: R${calculateTotal().toFixed(2)}
@@ -190,13 +193,14 @@ const CartPage = () => {
               className="checkout-button"
               onClick={() => {
                 localStorage.setItem("cart", JSON.stringify(games));
+                localStorage.setItem("shippingFee", shippingFee);
                 console.log("Todos os dados dos jogos salvos no localStorage:", games);
                 navigate("/endereco");
               }}
+              disabled={shippingFee === 0 || games.length === 0}
             >
               Proceed to Checkout
             </button>
-
           </div>
         )}
       </div>
