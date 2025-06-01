@@ -54,6 +54,7 @@ const ResumoPedido = () => {
       formaPagamento,
       itens: jogosCompletos,
       userId: user.id,
+      status: "Aguardando pagamento",
       total: total,
       data: new Date().toISOString()
     };
