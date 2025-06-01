@@ -20,14 +20,14 @@
   font-size: 28px;
   margin-bottom: 10px;
   text-align: center;
-  color: #000; /* Definir cor preta */
+  color: #000;
 }
 
 .cart-content h2 {
   font-size: 20px;
   margin-bottom: 20px;
   text-align: center;
-  color: #000; /* Definir cor preta */
+  color: #000;
 }
 
 .empty-cart-message {
@@ -106,6 +106,39 @@
   background-color: #d32f2f;
 }
 
+/* Estilo da seleção de frete */
+.shipping-select {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.shipping-select label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+  margin-bottom: 5px;
+}
+
+.shipping-select select {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  appearance: none;
+  background-color: #fff;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.shipping-select select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
 /* Estilo total do pedido */
 .total-container {
   margin-top: 20px;
@@ -118,12 +151,12 @@
   font-size: 22px;
   font-weight: bold;
   margin-bottom: 20px;
-  color: #000; /* Definir cor preta */
+  color: #000;
 }
 
 .shipping-fee {
   font-size: 16px;
-  color: #000; /* Cor preta para o valor do frete fixo */
+  color: #000;
   margin-bottom: 10px;
 }
 
@@ -156,5 +189,9 @@
 
   .checkout-button {
     font-size: 16px;
+  }
+
+  .shipping-select {
+    max-width: 100%;
   }
 }
