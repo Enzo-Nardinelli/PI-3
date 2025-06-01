@@ -17,6 +17,9 @@ import EnderecoPage from "./carrinho2/EnderecoPage";
 import PagamentoPage from "./carrinho2/PagamentoPage";
 import ResumoPedido from "./carrinho2/ResumoPedido";
 import EditPedido from "./editPedido/page";
+import LoginPage from "./Backoffice/login";
+import LinksPage from "./Backoffice/principal";
+import RegisterPage from "./Backoffice/cadastrar";
 
 export default function Inicio() {
   return (
@@ -34,6 +37,9 @@ export default function Inicio() {
           <Route path="/pagamento" element={<PagamentoPage />} />
           <Route path="/resumo" element={<ResumoPedido />} />
           <Route path="/editPedido" element={<EditPedido/>} />
+          <Route path="/backofficelogin" element={<LoginPage />} />
+          <Route path="/backofficeprincipal" element={<LinksPage />} />
+          <Route path="/backofficecadastro" element={<RegisterPage/>} />
         </Routes>
       </Router>
     )
