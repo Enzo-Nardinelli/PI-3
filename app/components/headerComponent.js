@@ -26,10 +26,7 @@ const Header = () => {
 
       {/* Itens de navegação no meio */}
       <ul className="nav-list">
-        <li className="nav-item">LOJA</li>
-        <li className="nav-item">BIBLIOTECA</li>
-        <li className="nav-item">COMUNIDADE</li>
-        <li className="nav-item">AMIGOS</li>
+        <div onClick={() => {navigate("/backofficelogin")}}>.</div>
       </ul>
 
       {/* Carrinho e usuário à direita */}
