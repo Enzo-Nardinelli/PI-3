@@ -44,7 +44,7 @@ const ResumoPedido = () => {
     completarDadosCarrinho();
   }, []);
 
-  const frete = 20;
+  const frete = Number(localStorage.getItem("shippingFee")) || 0;
   const subtotal = jogosCompletos.reduce((acc, jogo) => acc + (jogo.price * jogo.quantity), 0);
   const total = subtotal + frete;
   const finalizarPedido = async () => {
