@@ -45,7 +45,7 @@ const Header = () => {
         </li>
         <li className="nav-item">
           <Link href="/editPedido">
-            <img src="/imagens/edit.png" height="20" width="20" alt="Editar Usuário" />
+            <img src="/imagens/menu-hamburguer.png" height="20" width="20" alt="Ver pedidos" />
           </Link>
         </li>
       </div>
