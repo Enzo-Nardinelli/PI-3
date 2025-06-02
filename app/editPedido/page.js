@@ -6,31 +6,71 @@ function EditPedido() {
   const [pedidos, setPedidos] = useState([]);
   const [user, setUser] = useState(null);
   const [id, setId] = useState(null);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("userLoggedIn"));
     if (storedUser && id == null) {
       setUser(storedUser);
-      loadPedidos(storedUser.id);
+      if (storedUser.isEstoquista) {
+        loadUsersAndPedidos();  // Only load pedidos if the user is an "Estoquista"
+      } else {
+        loadPedidos(storedUser.id);  // Load only the logged-in user's pedidos
+      }
     } else {
-        loadPedidos(id);
+      loadPedidos(id);
     }
-  }, []);
+  }, [id]);
 
+  // Fetch all users' IDs and their pedidos (for Estoquista users only)
+  const loadUsersAndPedidos = async () => {
+    try {
+      const usersResponse = await fetch('http://localhost:8080/users/');
+      if (!usersResponse.ok) {
+        console.error("Erro ao carregar usuários:", usersResponse.status);
+        return;
+      }
+      const usersData = await usersResponse.json();
+      setUsers(usersData);
+
+      // Map over users to get their pedidos
+      const pedidosData = await Promise.all(usersData.map(user => fetchPedidosByUserId(user.id)));
+      const allPedidos = pedidosData.flat(); // Flatten the array to have all pedidos in one list
+      const pedidosOrdenados = allPedidos.sort((a, b) => new Date(b.data) - new Date(a.data));
+      setPedidos(pedidosOrdenados);
+    } catch (error) {
+      console.error("Erro ao carregar pedidos e usuários:", error);
+    }
+  };
+
+  const fetchPedidosByUserId = async (userId) => {
+      if (!userId) return [];
+      try {
+        const response = await fetch(`http://localhost:8080/pedidos/usuario/${userId}`);
+        if (!response.ok) {
+          console.error(`Erro ao carregar pedidos do usuário ${userId}:`, response.status);
+          return [];
+        }
+        return await response.json();
+      } catch (error) {
+        console.error(`Erro ao carregar pedidos do usuário ${userId}:`, error);
+        return [];
+      }
+    };
+
+  // Fetch pedidos by user ID (for a specific user or logged-in user)
   const loadPedidos = async (userId) => {
     if (!userId) return;
-
     try {
       const response = await fetch(`http://localhost:8080/pedidos/usuario/${userId}`);
       if (!response.ok) {
-        console.error("Erro ao carregar pedidos:", response.status);
+        console.error(`Erro ao carregar pedidos do usuário ${userId}:`, response.status);
         return;
       }
-      const data = await response.json();
-      const pedidosOrdenados = data.sort((a, b) => new Date(b.data) - new Date(a.data));
-      setPedidos(pedidosOrdenados);
+      const pedidosData = await response.json();
+      setPedidos(pedidosData);
     } catch (error) {
-      console.error("Erro ao carregar pedidos:", error);
+      console.error(`Erro ao carregar pedidos do usuário ${userId}:`, error);
     }
   };
 
@@ -87,17 +127,20 @@ function EditPedido() {
   return (
     <div>
       <h2>Pedidos do Usuário</h2>
+      {/* Only display the input for Estoquista */}
       {user?.isEstoquista && (
-                <div>
-                <input
-                  type="text"
-                  value={id}
-                  onChange={handleChange}
-                  placeholder="entre com o id"
-                />
-                <button onClick={handleClick}>Enviar</button>
-              </div>
-              )}
+        <div>
+          <input
+            type="text"
+            value={id}
+            onChange={handleChange}
+            placeholder="Entre com o ID do usuário"
+          />
+          <button onClick={handleClick}>Enviar</button>
+        </div>
+      )}
+
+      {/* Conditionally render pedidos list */}
       {pedidos.length === 0 ? (
         <p>Nenhum pedido encontrado.</p>
       ) : (
@@ -122,6 +165,7 @@ function EditPedido() {
                 )}
               </ul>
 
+              {/* Only show "Alterar Status" buttons if the user is an Estoquista */}
               {user?.isEstoquista && (
                 <div style={{ marginTop: '10px' }}>
                   <p><strong>Atualizar Status:</strong></p>
