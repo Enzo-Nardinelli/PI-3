@@ -1,0 +1,52 @@
+.app {
+    background-color: #427AA1;
+    color: white;
+  }
+  
+  .navBar{
+    display: flex;
+  }
+  
+  .navTeste {
+    background-color: #064789;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    width: 790px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding-bottom: 1px;
+    margin-left: 400px;
+  }
+  
+  .navBugado{
+    color: #EBF2FA;
+    cursor: pointer;
+    font-size: 1rem;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 30px;
+    margin-right: 30px;
+  }
+  
+  .page-title {
+    color: #EBF2FA;
+    font-size: 2rem;
+    margin: 20px 0;
+    text-align: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  }
+  
+  .gameListDiv{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(1500px, 1fr));
+    padding: 20px;
+    background-color: #427AA1;
+  }
+  
+  h4 {
+    margin-left: 21.2%;
+  }

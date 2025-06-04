@@ -1,11 +1,12 @@
 'use client';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import "./style.css";
+import Link from 'next/link';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -50,8 +51,8 @@ function Login() {
             console.error("Error updating the cart:", error);
           }
         }
-        
-        navigate("/");  // Redireciona para a página inicial após o login
+        alert("Login ok")
+        window.location.href = "/";  // Redireciona para a página inicial após o login
       } else {
         console.error("Invalid user data:", data);
       }
@@ -60,28 +61,28 @@ function Login() {
     }
   };
 
-  const handleClick = () => {
-    navigate("/register"); // Redireciona para a página de registro
-  };
-
   return (
     <div className='app01'>
       <div className='centered-form'>
         <form onSubmit={handleLogin}>
           <input
+            id="emailField"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
           />
           <input
+            id="passwordField"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Senha"
           />
-          <button type="submit">Confirmar</button>
-          <button onClick={handleClick} type="button">Registrar</button>
+          <button id="loginSubmitButton" type="submit">Confirmar</button>
+          <Link href="/register">
+            <button id="registerAcesso" type="button">Registrar</button>
+          </Link>
         </form>
       </div>
     </div>

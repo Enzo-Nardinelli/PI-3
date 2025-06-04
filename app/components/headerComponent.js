@@ -2,10 +2,8 @@
 import React from 'react';
 import './headerComponent.css';
 import Link from 'next/link';
-import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
-  const navigate = useNavigate();
 
   const handleClickCarrinho = () => {
     console.log("Redirecionando para o carrinho");
@@ -34,7 +32,7 @@ const Header = () => {
         <li className="nav-item">
           <img src="/imagens/carrinho.png" height="20" width="20" alt="Carrinho" onClick={handleClickCarrinho} />
         </li>
-        <li className="nav-item">
+        <li className="nav-item" id="loginAcesso">
           <img src="/imagens/user.png" height="20" width="20" alt="User" onClick={handleClickUser} />
         </li>
         {/* Link para a página de editar usuário */}

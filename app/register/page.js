@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react';
 import './page.css';
-import { useNavigate } from 'react-router-dom';
+import Link from 'next/link';
 
 function Register() {
   const [username, setUsername] = useState('');
@@ -16,7 +16,6 @@ function Register() {
   const [bairro, setBairro] = useState('');
   const [cidade, setCidade] = useState('');
   const [uf, setUf] = useState('');
-  const navigate = useNavigate();
 
   const handleCepBlur = async () => {
     if (cep.length === 8) {
@@ -90,14 +89,14 @@ function Register() {
       localStorage.setItem("user", JSON.stringify(data));
 
       console.log("User registered with SUCCESS:", data);
-      navigate("/login");
+      alert("Register ok");
+      window.location.href ="/login";
     } catch (error) {
       console.error("Registration failed:", error);
     }
   };
 
   const btnLogin = () => {
-    navigate("/login");
   };
 
   const getCurrentDate = () => {
@@ -114,30 +113,35 @@ function Register() {
       <div className='centered-form'>
         <form onSubmit={handleRegister}>
           <input
+            id="username"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Nome Completo"
           />
           <input
+            id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
           />
           <input
+            id="password1"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Senha"
           />
           <input
+            id="password2"
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="Confirmar Senha"
           />
-          <select
+          <select 
+            id="genderSelect"
             value={genero}
             onChange={(e) => setgenero(e.target.value)}
             placeholder="Gênero"
@@ -157,6 +161,7 @@ function Register() {
             <option value="outro">Outro</option>
           </select>
           <input
+            id="date"
             type="date"
             value={dataNascimento}
             onChange={(e) => setdataNascimento(e.target.value)}
@@ -164,6 +169,7 @@ function Register() {
             max={getCurrentDate()}
           />
           <input
+            id="cep"
             type="text"
             value={cep}
             onChange={(e) => setCep(e.target.value)}
@@ -171,37 +177,44 @@ function Register() {
             placeholder="CEP"
           />
           <input
+            id=""
             type="text"
             value={logradouro}
             onChange={(e) => setLogradouro(e.target.value)}
             placeholder="Logradouro"
           />
           <input
+            id="numero"
             type="text"
             value={numero}
             onChange={(e) => setNumero(e.target.value)}
             placeholder="Número"
           />
           <input
+            id=""
             type="text"
             value={bairro}
             onChange={(e) => setBairro(e.target.value)}
             placeholder="Bairro"
           />
           <input
+            id=""
             type="text"
             value={cidade}
             onChange={(e) => setCidade(e.target.value)}
             placeholder="Cidade"
           />
           <input
+            id=""
             type="text"
             value={uf}
             onChange={(e) => setUf(e.target.value)}
             placeholder="UF"
           />
-          <button type="submit">Confirmar</button>
-          <button onClick={btnLogin}>Login</button>
+          <button id="registerSubmitButton" type="submit">Confirmar</button>
+          <Link href="/login">
+            <button  id="loginAcesso" type="button">Login</button>
+          </Link>
         </form>
       </div>
     </div>

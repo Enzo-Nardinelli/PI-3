@@ -2,11 +2,9 @@
 import React from 'react';
 import './gameCardComponent.css';
 
-import { useNavigate } from 'react-router-dom';
 
 
 const GameCard = ({ game }) => {
-  const navigate = useNavigate();
 let teste = game.imgURL;
 
   const handleClick = () => {
