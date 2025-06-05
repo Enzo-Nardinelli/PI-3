@@ -3,6 +3,8 @@ const webpack = require("@cypress/webpack-preprocessor");
 
 module.exports = defineConfig({
   e2e: {
+    viewportWidth: 1440,   
+    viewportHeight: 900,   
     setupNodeEvents(on, config) {
       const options = {
         webpackOptions: {
@@ -31,7 +33,7 @@ module.exports = defineConfig({
       };
 
       on("file:preprocessor", webpack(options));
+      return config;
     },
   },
 });
-

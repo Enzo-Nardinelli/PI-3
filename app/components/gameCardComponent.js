@@ -8,13 +8,14 @@ const GameCard = ({ game }) => {
 let teste = game.imgURL;
 
   const handleClick = () => {
-    navigate(`/game/${game.id}`);  // Redirect to the GameDetail page for this game
+    window.location.href = `/GameDetails.js?id=${game.id}`;
+    //navigate(`/game/${game.id}`);  // Redirect to the GameDetail page for this game
   };
   // const jogos = localStorage.getItem('user').jogos;
   // console.log(jogos);
   
   return (
-    <div className="game-card" onClick={handleClick}>
+    <div id={game.title} className="game-card" onClick={handleClick}>
       <div className="imgDiv">
       <img src={game.imgURL} alt={game.title} className="game-image" />
       </div>

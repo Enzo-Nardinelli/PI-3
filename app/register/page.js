@@ -89,7 +89,6 @@ function Register() {
       localStorage.setItem("user", JSON.stringify(data));
 
       console.log("User registered with SUCCESS:", data);
-      alert("Register ok");
       window.location.href ="/login";
     } catch (error) {
       console.error("Registration failed:", error);

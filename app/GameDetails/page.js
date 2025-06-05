@@ -2,15 +2,14 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './gamedetail.css';
-import { useNavigate } from 'react-router-dom';
 import ImageGallery from './ImageGallery';
 
 function GameDetails() {
-  const { id } = useParams();
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
   const [game, setGame] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchGame = async () => {

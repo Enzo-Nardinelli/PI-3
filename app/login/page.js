@@ -9,6 +9,10 @@ function Login() {
   const [password, setPassword] = useState('');
 
   const handleLogin = async (e) => {
+    const temporaryUser = {
+      userCarrinho: [],
+    };
+    localStorage.setItem("temporaryUser", JSON.stringify(temporaryUser));;
     e.preventDefault();
     try {
       const response = await fetch("http://localhost:8080/api/auth/login", {
@@ -51,7 +55,6 @@ function Login() {
             console.error("Error updating the cart:", error);
           }
         }
-        alert("Login ok")
         window.location.href = "/";  // Redireciona para a página inicial após o login
       } else {
         console.error("Invalid user data:", data);

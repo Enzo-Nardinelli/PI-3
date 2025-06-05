@@ -11,8 +11,10 @@ function Home() {
   const navigate = useNavigate();
   
   useEffect(() => {
-        // Retrieve the stored JSON string
-    const userJson = localStorage.getItem('user');
+    const temporaryUser = {
+      userCarrinho: [],
+    };
+    localStorage.setItem("temporaryUser", JSON.stringify(temporaryUser));;
     
     const fetchGames = async () => {
       try {
